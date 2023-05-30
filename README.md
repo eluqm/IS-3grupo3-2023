@@ -1,5 +1,5 @@
-# e-restaurant
-
+# E-restaurant  
+Para que puedan ejecutar el proyecto hagan git clone y luego cuando lo tengan en su pc pongan estos dos comandos.  
 ## Project setup
 ```
 npm install
@@ -10,10 +10,6 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

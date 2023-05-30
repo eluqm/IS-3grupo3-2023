@@ -1,8 +1,10 @@
 <template>
+  <div class="app">
+    <router-view/>
+  </div>
     <!-- En caso se necesita algo gloabalemnte se declara aqui-->
     <!-- <router-link to="/">Home</router-link>  -->
   
-  <router-view/>
 </template>
 
 <style>
@@ -71,6 +73,11 @@ body {
     overflow-x: hidden;
     color: var(--color-info);
 }
+
+.app{
+  background: var(--color-background);
+}
+
 .container{
   display: grid;
   width: 96%;
@@ -111,5 +118,38 @@ h5 {
 
 small {
   font-size: 0.75rem; 
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.text-muted{
+  color: var(--color-info-dark)
+}
+
+b {
+  color: var(--color-dark);
+}
+
+.primary {
+  color: var(--color-primary);
+}
+
+.danger {
+  color: var(--color-danger);
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.warning {
+  color: var(--color-warning);
 }
 </style>

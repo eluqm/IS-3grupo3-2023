@@ -2,16 +2,22 @@
     <div class="home">
         <h1>Index</h1>
     </div>
+    <div>
+      <button @click="sendOrder">Enviar orden</button>
+    </div>
+    
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { socket } from '@/socket'
 export default {
 name: 'HomeView',
 components: {
-    HelloWorld
+},
+methods:{
+  sendOrder(){
+    socket.emit("handle-order", { msg : 'este es un mensaje'})
+  }
 }
 }
 </script>
@@ -22,8 +28,6 @@ components: {
 @media screen and (max-width: 700px){
   .container{
     width: 90%;
-    grid-template-columns: 1fr;
-    margin: 0 auto 0 ;
   }
 }
 </style>

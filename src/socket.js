@@ -1,16 +1,27 @@
 import { reactive } from "vue";
-import { io } from "socket.io-client";
-
+//import socketIO from "socket.io-client";
+import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
-  fooEvents: [],
+  orders: [],
   barEvents: []
 });
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:8081";
+//const URL = process.env.NODE_ENV === "production" ? undefined : "http://127.0.0.1:5000/";
+const URL =  "http://127.0.0.1:5000/";
 
-export const socket = io(URL);
+//export const socket = socketIO(URL
+export const socket = io(URL
+  /*
+  ,{
+    withCredentials:true,
+    allowedHeaders:{
+      "Access-Control-Allow-Origin": "*"
+    }
+  }
+  */
+);
 
 socket.on("connect", () => {
   state.connected = true;
@@ -18,6 +29,10 @@ socket.on("connect", () => {
 
 socket.on("disconnect", () => {
   state.connected = false;
+});
+
+socket.on("order", (food) => {
+  state.orders.push(food);
 });
 
 socket.on("foo", (...args) => {

@@ -12,10 +12,24 @@ const routes = [
     component: () => import('../views/AboutView.vue')
   },
   {
-    path: '/admin/dashboard',
+    path: '/admin',
     name: 'admin',
+    component: () => import('../views/AdminView.vue'),
+    children: [
+      {
+      path: 'dashboard',
+      name: 'dashboard',
+      component: () => import('../views/DashboardView.vue')
+      }
+    ]
+  },
+  /*
+  {
+    path: '/admin/dashboard',
+    name: 'dashboard',
     component: () => import('../views/DashboardView.vue')
   },
+  */
   {
     path: '/admin/orders',
     name: 'orders',
@@ -23,7 +37,7 @@ const routes = [
   },
   {
     path: '/admin/finished_orders',
-    name: 'orders',
+    name: 'finished_orders',
     component: () => import('../views/FinishedOrdersView.vue')
   }
   
