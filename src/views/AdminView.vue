@@ -1,19 +1,28 @@
 <template>
-    <router-view/>
-    <!-- -->
-    <div class="container">
-        <!-- <Sidebar/> -->
+    <div class="admin">
+        <Sidebar/>
+        <div class="wrapper">
+            <Topbar/>
+            <router-view/>
+        </div>
     </div>
+    
 </template>
 
 <script>
-import Profile from '../components/Profile.vue';
 import Sidebar from '../components/Sidebar.vue';
+import Topbar from '../components/Topbar.vue';
 export default {
     name: 'Admin',
-    components: {Sidebar, Profile}
+    components: {Sidebar, Topbar}
 }
 </script>
 <style scoped>
-
+.admin {
+    display: flex;
+}
+.wrapper {
+    width: 100%;
+    height: 100%;
+}
 </style>

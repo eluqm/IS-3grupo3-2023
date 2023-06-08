@@ -1,5 +1,5 @@
 <template>
-    <aside>
+    <div class="aside">
         <div class="top">
             <div class="logo">
                 <img src="../assets/logo.png" alt="">
@@ -10,69 +10,81 @@
             </div>
         </div>
       <div class="sidebar">
-        <router-link to="/admin/dashboard" class="a active">
-          <i class="material-symbols-sharp">grid_view</i>
-          <h3>Dashboard</h3>
-        </router-link>
-        <router-link to="/admin/orders" class="a">
-            <i class="material-symbols-sharp">receipt_long</i>
-            <h3>Ordenes</h3>
-        </router-link>
-        <router-link to="/admin/finished_orders" class="a">
-            <i class="material-symbols-sharp">order_approve</i>
-            <h3>Ordenes Terminadas</h3>
-        </router-link>
+        <SidebarLink to="/admin/dashboard" name="Dashboard" icon="grid_view"/>
+        <SidebarLink to="/admin/orders" name="Ordenes" icon="receipt_long"/>
+        <SidebarLink to="/admin/finished_orders" name="Ordenes Terminadas" icon="order_approve"/>
       </div>
-    </aside>
+    </div>
 </template>
   
-<script>
+<script >
+import SidebarLink from '../components/SidebarLink.vue'
 export default {
-name: 'Sidebar',
-props: {
-    //msg: String
-}
+  name: 'Sidebar',
+  props: {
+      //msg: String
+  },
+  components: {SidebarLink}
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-aside {
+* {
+  --color-primary:#7380ec;
+}
+
+.aside {
+  display: block;
+  width: 20rem;
+  height: 100vh;
+  margin: 0;
+  padding: 1rem 0.5rem;
+  background: var(--color-primary);
+  color: white;
+}
+/*
+.aside {
+  background: white;
   margin-top: 1.8rem;
   height: 100vh;
 }
-aside .top{
-  margin: 1rem 0 1rem;
+*/
+.aside .top{
+  margin: 0rem 0 1rem;
   text-align: center;
 }
 
-aside .top .logo{
+.aside .top .logo{
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
-aside .top .logo img{
+.aside .top .logo img{
   width: 2rem;
   height: 2rem;
 }
-aside .top .logo i{
+.aside .top .logo i{
   font-size: 3rem;
 }
-aside .close{
+.aside .close{
   display: none;
 }
-aside .sidebar{
+.aside .sidebar{
   display: flex;
   flex-direction: column;
   height: 86vh;
   position: relative;
   margin-top: 2rem;
+  color: white;
 }
 
-aside .sidebar .a{
+.aside .sidebar .a{
   text-decoration: none;
-  color: var(--color-info-dark);
+  /*color: var(--color-info-dark);*/
+  color: white;
   display: flex;
   height: 3.7rem;
   align-items: center;
@@ -82,28 +94,28 @@ aside .sidebar .a{
   transition: all 300ms ease;
   background: transparent;
 }
-aside .sidebar .a i{
+.aside .sidebar .a i{
   transition: all 300ms ease;
 }
-aside .sidebar .a.active{
-  background-color: var(--color-light);
+.aside .sidebar .a.active{
+  background-color: var(--color-white);
   color: var(--color-primary);
   margin-left: 0rem;
 }
 
-aside .sidebar .a.active::before{
+.aside .sidebar .a.active::before{
   content: '';
   height: 100%;
   width: 6px;
   background: var(--color-primary);
 }
-aside .sidebar .a:hover{
-  color: var(--color-primary);
+.aside .sidebar .a:hover{
+  /*color: var(--color-primary);*/
 }
-aside .sidebar .a:hover i{
+.aside .sidebar .a:hover i{
   margin-left: 1rem;                                                                                
 }
-aside .side a .active:hover i{
+.aside .side a .active:hover i{
   margin-left: 0;
 }
 </style>

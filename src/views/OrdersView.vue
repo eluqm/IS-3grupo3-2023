@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Sidebar/>
     <main>
       <h1>Ordenes</h1>
       <div class="date">
@@ -56,25 +55,6 @@
     </main>
     <!-- END RECENT orders-->
     <div class="right">
-      <div class="top">
-        <button class="menu-btn" id="menu-btn">
-            <i class="material-symbols-sharp">menu</i>
-        </button>
-        <div class="theme-toggler">
-            <i class="material-symbols-sharp active">light_mode</i>
-            <i class="material-symbols-sharp">dark_mode</i>
-        </div>
-        <div class="profile">
-            <div class="info">
-                <p>Hey, <b>Daniel</b></p>
-                <small class="text-muted">Admin</small>
-            </div>
-            <div class="profile-photo">
-                <img src="../assets/profile-1.jpg" alt="#">
-            </div>
-        </div>
-      </div>
-      <!-- END TOP  -->
       <div class="div-frequency">
         <h2>Frecuencia de ordenes</h2>
         <div class="frequency">
@@ -128,11 +108,16 @@
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar.vue'
+import {state} from '@/socket'
 import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
 export default {
   name:'OrdersView',
-  components: {Sidebar, CompleteOrder} 
+  components: { CompleteOrder},
+  computed:{
+    connected(){
+      return state.orders;
+    }
+  }
 }
 </script>
 
@@ -152,7 +137,10 @@ export default {
   color: var(--color-warning);
 }
 .container {
-  grid-template-columns: 14rem auto 23rem;
+  display: grid;
+  grid-template-columns: auto 23rem;
+  gap: 1.8rem;
+  padding: 1rem;
 }
 
 /*main*/
@@ -229,46 +217,7 @@ main .recent-orders a{
 .right{
   margin-top: 1.4rem;
 }
-.right .top{
-  display: flex;
-  justify-content: flex-end;
-  gap: 2rem;
-}
-.right .top button{
-  display: none;
-}
-.right .top .theme-toggler{
-  width: 4.2rem;
-  height: 1.6rem;
-  background: var(--color-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: var(--border-radius-1);
-  /*color: var(--color-dark);*/
-}
 
-.right .top .theme-toggler i{
-  font-size: 1.2rem;
-  width: 50%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-.right .top .theme-toggler i.active{
-  color: var(--color-white);
-  background: var(--color-primary);
-  border-radius: var(--border-radius-1);
-}
-
-.right .top .profile{
-  display: flex;
-  gap: 2rem;
-  text-align: right;
-}
 .profile-photo{
   width: 2.8rem;
   height: 2.8rem;

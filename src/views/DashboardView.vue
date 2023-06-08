@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <Sidebar/>
-    
     <main>
       <h1>Dashboard</h1>
       <div class="date">
@@ -64,8 +62,6 @@
     </main>
     <!-- END RECENT orders-->
     <div class="right">
-      <Profile/>
-      <!-- END TOP  -->
       <div class="div-frequency">
         <h2>Frecuencia de ordenes</h2>
         <div class="frequency">
@@ -149,8 +145,12 @@ export default {
 .warning {
   color: var(--color-warning);
 }
+
 .container {
-  grid-template-columns: 14rem auto 23rem;
+  display: grid;
+  grid-template-columns: auto 23rem;
+  gap: 1.8rem;
+  padding: 1rem;
 }
 /* MAIN RECENT ORDERS */
 

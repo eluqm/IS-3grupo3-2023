@@ -20,6 +20,16 @@ const routes = [
       path: 'dashboard',
       name: 'dashboard',
       component: () => import('../views/DashboardView.vue')
+      },
+      {
+        path: 'orders',
+        name: 'orders',
+        component: () => import('../views/OrdersView.vue')
+      },
+      {
+        path: 'finished_orders',
+        name: 'finished_orders',
+        component: () => import('../views/FinishedOrdersView.vue')
       }
     ]
   },
@@ -29,17 +39,14 @@ const routes = [
     name: 'dashboard',
     component: () => import('../views/DashboardView.vue')
   },
-  */
+  
   {
     path: '/admin/orders',
     name: 'orders',
     component: () => import('../views/OrdersView.vue')
   },
-  {
-    path: '/admin/finished_orders',
-    name: 'finished_orders',
-    component: () => import('../views/FinishedOrdersView.vue')
-  }
+  */
+  
   
 ]
 

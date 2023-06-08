@@ -78,13 +78,6 @@ body {
   background: var(--color-background);
 }
 
-.container{
-  display: grid;
-  width: 96%;
-  margin: 0 auto;
-  gap: 1.8rem;
-  grid-template-columns: 14rem auto 23rem;
-}
 
 a {
   color: var(--color-dark);
