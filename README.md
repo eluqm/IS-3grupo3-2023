@@ -35,11 +35,16 @@ npm run serve
 - RF6: El sistema debe permitir a los usuarios cancelar pedidos.
 - RF7: El sistema debe permitir a los usuarios ver el estado de sus pedidos.
 - RF8: El sistema debe permitir a los usuarios ver el historial de sus pedidos.
+- RF9: El sistema debe permitir al personal del restaurante llevar el control de las órdenes de los clientes.
+- RF10: El sistema debe permitir proporcionar una interfaz interactiva y fácil para que los clientes realicen sus pedidos.
+- RF11: El sistema debe permitir al personal del restaurante llevar el control de los productos.
 
 ## Requisitos No Funcionales
-- RNF1: El sistema debe ser capaz de soportar 1000 usuarios concurrentes.
-- RNF2: El sistema debe ser capaz de soportar 1000 pedidos concurrentes.
-- RNF3: El sistema debe ser capaz de soportar 1000 productos concurrentes.
+- RNF1: El sistema debe ser fácil de usar y entender tanto para el personal del restaurante como para los clientes.
+- RNF2: El sistema debe ser seguro y confiable.
+- RNF3: El sistema debe ser escalable para adaptarse a las necesidades futuras del restaurante.
+- RNF4: El sistema debe ser compatible con diferentes dispositivos y sistemas operativos.
+- RNF5: El sistema debe ser fácil de integrar con otras herramientas y sistemas utilizados por el restaurante.
 
 
 ## Especificación de Software 
