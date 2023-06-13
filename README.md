@@ -56,3 +56,8 @@ npm run serve
 
 ### Diagrama de Base de Datos
 [![Diagrama de Base de Datos](https://live.staticflickr.com/65535/52972566443_0437bd0ec0_c.jpg)](https://flic.kr/p/2kV5Z6E)
+
+### Enlace al documento de la especificación de software:
+
+https://docs.google.com/document/d/1SBNQK50c0LKwlEgL9AztEQENZGwrK6vx/edit?usp=sharing&ouid=116425282052983963021&rtpof=true&sd=true
+
