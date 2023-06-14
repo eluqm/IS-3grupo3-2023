@@ -22,12 +22,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
+                <tr v-for="(objeto, index) in connected" :key="index">{{ objeto }}>
+                  <td>{{ order.idOrden }}</td>
+                  <td>{{ order.mesa }}</td>
+                  <td>{{ order.items }}</td>
+                  <td>{{ order.hora }}</td>
+                  <td>{{ order.estado }}</td>
                   <td class="primary">Detalles</td>
                 </tr>
                 <tr>
@@ -196,6 +196,13 @@ main .recent-orders table{
 
 main .recent-orders table:hover{
   box-shadow: none;
+}
+
+
+.main .recent-orders th {
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* Additional styles for <th> elements */
 }
 
 main table tbody td{
