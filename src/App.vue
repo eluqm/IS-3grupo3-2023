@@ -145,4 +145,7 @@ b {
 .warning {
   color: var(--color-warning);
 }
+.bold{
+  font-weight: bold;
+}
 </style>

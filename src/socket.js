@@ -3,8 +3,8 @@ import { reactive } from "vue";
 import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
-  orders: [],
-  barEvents: []
+  orders: [], /*cola de ordenes*/
+  fooEvents: []/*este solo es para el ejemplo*/
 });
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -23,22 +23,23 @@ export const socket = io(URL
   */
 );
 
+/*Connection*/
+
 socket.on("connect", () => {
   state.connected = true;
 });
-
 socket.on("disconnect", () => {
   state.connected = false;
 });
 
+/*Cliente*/
+
 socket.on("order", (food) => {
   state.orders.push(food);
 });
+/*Admin*/
 
+/*Exameple*/
 socket.on("foo", (...args) => {
   state.fooEvents.push(args);
-});
-
-socket.on("bar", (...args) => {
-  state.barEvents.push(args);
 });
