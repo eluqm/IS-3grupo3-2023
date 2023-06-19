@@ -30,6 +30,11 @@ const routes = [
         path: 'finished_orders',
         name: 'finished_orders',
         component: () => import('../views/FinishedOrdersView.vue')
+      },
+      {
+        path: 'menu',
+        name: 'menu',
+        component: () => import('../views/MenuView.vue')
       }
     ]
   },

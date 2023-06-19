@@ -8,48 +8,14 @@
       <ul>
         <li v-for="(objeto, index) in connected" :key="index">{{ objeto }}</li>
       </ul>
-      <div class="recent-orders">
+      <div class="waiting-orders">
         <h2>Ordenes en espera</h2>
         <CompleteOrder/>
-        <div class="order">
-          <table>
-              <thead>
-                  <tr>
-                      <th>Mesa: 12</th>
-                      <th>Hora: 15:35</th>
-                      <th></th>
-                      <th>
-                        <button class="accordion">
-                          +
-                        </button>
-                      </th>
-                  </tr>
-              </thead>
-              <tbody :style="{'display':'none'}">
-                  <tr>
-                    <td>Fuente Mixta 2</td>
-                    <td>Papas, Lechon de hcnacho, sarza de senca,
-                      mas coasas, mas cosas, mas cosas, mas cosas</td>
-                    <td>1</td>
-                    <td class="primary">Seleccionar</td>
-                  </tr>
-                  <tr>
-                    <td>Fuente 4</td>
-                    <td>Papas, Lechon de hcnacho, sarza de senca,
-                      mas coasas, mas cosas, mas cosas, mas cosas</td>
-                    <td>1</td>
-                    <td class="primary">Seleccionar</td>
-                  </tr>
-                  <tr>
-                    <td>Caldo de Lomo</td>
-                    <td>Papas, Lechon de hcnacho, sarza de senca,
-                      mas coasas, mas cosas, mas cosas, mas cosas</td>
-                    <td>2</td>
-                    <td class="primary">Seleccionar</td>
-                  </tr>
-              </tbody>
-          </table>
-        </div>
+        <a href="#">Show all</a>
+      </div>
+      <div class="waiting-orders">
+        <h2>Platos en preparación</h2>
+        <CompleteOrder/>
         <a href="#">Show all</a>
       </div>
     </main>
@@ -167,15 +133,15 @@ main .date input[type="date"] {
 
 
 
-main .recent-orders{
+main .waiting-orders{
   margin-top: 2rem;
 }
 
-main .recent-orders h2{
+main .waiting-orders h2{
   margin-bottom: 0.8rem;
 }
 
-main .recent-orders table{
+main .waiting-orders table{
   background: var(--color-white);
   border-radius: var(--card-border-radius);
   width: 100%;
@@ -185,7 +151,7 @@ main .recent-orders table{
   transition: all 300ms ease;
 }
 
-main .recent-orders table:hover{
+main .waiting-orders table:hover{
   box-shadow: none;
 }
 
@@ -206,7 +172,7 @@ main table button{
   height: 2rem;
   border-radius: 50%;
 }
-main .recent-orders a{
+main .waiting-orders a{
   text-align: center;
   margin: 1rem auto;
   color: var(--color-primary);

@@ -53,6 +53,14 @@
               <button @click="send_order">Ordenar</button>
             </div>
           </div>
+          <div class="dish" v-for="(dish, index) in menu" :key="index">
+            <img src="dish" alt="imagen">
+            <div class="details">
+              <h4>Lomo saltado: carne tierna juntos con papas fritas, acompañado de arroz</h4>
+              <h3>S/. 18.00</h3>
+              <button @click="send_order">Ordenar</button>
+            </div>
+          </div>
         </div>
         
       </div>
@@ -64,16 +72,21 @@
 </template>
 
 <script>
-import { socket } from '@/socket'
+import { state } from '@/socket'
 export default {
-name: 'HomeView',
-components: {
-},
-methods:{
-  send_order(){
-    socket.emit("handle-order", { msg : 'este es un mensaje'})
+  name: 'HomeView',
+  components: {
+  },
+  methods:{
+    send_order(){
+      socket.emit("handle-order", { msg : 'este es un mensaje'})
+    }
+  },
+  computed: {
+    menu(){
+      return state.menu;
+    }
   }
-}
 }
 </script>
 

@@ -13,6 +13,7 @@
         <SidebarLink to="/admin/dashboard" name="Dashboard" icon="grid_view"/>
         <SidebarLink to="/admin/orders" name="Ordenes" icon="receipt_long"/>
         <SidebarLink to="/admin/finished_orders" name="Ordenes Terminadas" icon="order_approve"/>
+        <SidebarLink to="/admin/menu" name="Menu" icon="menu_book"/>
       </div>
     </div>
 </template>

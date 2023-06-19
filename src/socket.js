@@ -4,6 +4,7 @@ import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
   orders: [], /*cola de ordenes*/
+  menu: {},
   fooEvents: []/*este solo es para el ejemplo*/
 });
 
@@ -33,11 +34,17 @@ socket.on("disconnect", () => {
 });
 
 /*Cliente*/
-
-socket.on("order", (food) => {
+socket.on("receive-menu", (menu) => {
+  state.menu = menu;
+});
+socket.on("make-order", (food) => {
   state.orders.push(food);
 });
+
 /*Admin*/
+socket.on("receive-order", (food) => {
+  state.orders.push(food);
+});
 
 /*Exameple*/
 socket.on("foo", (...args) => {

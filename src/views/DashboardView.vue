@@ -199,12 +199,6 @@ main .recent-orders table:hover{
 }
 
 
-.main .recent-orders th {
-  padding: 10px;
-  border: 1px solid #ccc;
-  /* Additional styles for <th> elements */
-}
-
 main table tbody td{
   height: 2.8rem;
   border-bottom: 1px solid var(--color-light);
