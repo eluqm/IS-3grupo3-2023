@@ -1,8 +1,12 @@
 import { reactive } from "vue";
-//import socketIO from "socket.io-client";
 import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
+  //Variables para el Cliente
+  //Variables para el Admin
+  menus: [],
+  items_from_menu:[],
+
   orders: [], /*cola de ordenes*/
   menu: {},
   fooEvents: []/*este solo es para el ejemplo*/
@@ -34,6 +38,9 @@ socket.on("disconnect", () => {
 });
 
 /*Cliente*/
+socket.on("get-menus", (menus) => {
+  state.menus = menus;
+});
 socket.on("receive-menu", (menu) => {
   state.menu = menu;
 });

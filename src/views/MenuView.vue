@@ -18,35 +18,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(objeto, index) in connected" :key="index">{{ objeto }}>
-                        <td>{{ order.idOrden }}</td>
-                        <td>{{ order.mesa }}</td>
-                        <td>{{ order.items }}</td>
-                        <td class="primary">Detalles</td>
-                        </tr>
-                        <tr>
-                            <td>85631</td>
-                            <td>8</td>
-                            <td>4</td>
+                        <tr v-for="(menu, index) in menus" :key="index">
+                            <td>{{ menu.name }}</td>
+                            <td>{{ menu.description }}</td>
+                            <td>  -  </td>
                             <td class="primary">
                                 <button class="select-menu">
                                     Seleccionar
                                 </button>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>85631</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="warning">Pendiente</td>
-                        </tr>
-                        <tr>
-                        <td>85631</td>
-                        <td>8</td>
-                        <td>4</td>
-                        <td class="primary">Detalles</td>
-                        </tr>
-                        
+                        </tr>                        
                     </tbody>
                 </table>                
             </div>
@@ -58,9 +39,23 @@
 </template>
 
 <script>
-
+import { socket } from '@/socket'
+import { state } from '@/socket'
 export default {
   name: 'MenuView',
+  data(){
+    return {
+        //menus : []
+    }
+  },
+  mounted(){
+    
+  },
+  computed: {
+    menus(){
+        return state.menus;
+    }
+  }
 }
 </script>
 <style scoped>
