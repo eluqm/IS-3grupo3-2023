@@ -3,12 +3,13 @@ import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
   //Variables para el Cliente
+  menu: {},
   //Variables para el Admin
   menus: [],
   items_from_menu:[],
 
   orders: [], /*cola de ordenes*/
-  menu: {},
+  
   fooEvents: []/*este solo es para el ejemplo*/
 });
 
@@ -38,9 +39,6 @@ socket.on("disconnect", () => {
 });
 
 /*Cliente*/
-socket.on("get-menus", (menus) => {
-  state.menus = menus;
-});
 socket.on("receive-menu", (menu) => {
   state.menu = menu;
 });
@@ -49,6 +47,13 @@ socket.on("make-order", (food) => {
 });
 
 /*Admin*/
+socket.on("get-menus", (menus) => {
+  state.menus = menus;
+});
+socket.on("get-items-from-menu", (items) => {
+  state.items_from_menu = items;
+});
+
 socket.on("receive-order", (food) => {
   state.orders.push(food);
 });

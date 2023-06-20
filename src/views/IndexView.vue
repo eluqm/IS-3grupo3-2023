@@ -37,28 +37,12 @@
           <i class="material-symbols-sharp btn-receipt">receipt_long</i>
         </div>
         <div class="menu">
-          <div class="dish">
-            <img src="../assets/lomo_saltado.jpg" alt="imagen">
+          <div class="dish" v-for="(item, index) in menu" :key="index">
+            <img :src="item.image" alt="imagen">
             <div class="details">
-              <p>Lomo saltado: carne tierna juntos con papas fritas, acompañado de arroz</p>
-              <p>S/. 18.00</p>
-              <button @click="send_order">Ordenar</button>
-            </div>
-          </div>
-          <div class="dish">
-            <img src="../assets/lomo_saltado.jpg" alt="imagen">
-            <div class="details">
-              <h4>Lomo saltado: carne tierna juntos con papas fritas, acompañado de arroz</h4>
-              <h3>S/. 18.00</h3>
-              <button @click="send_order">Ordenar</button>
-            </div>
-          </div>
-          <div class="dish" v-for="(dish, index) in menu" :key="index">
-            <img src="dish" alt="imagen">
-            <div class="details">
-              <h4>Lomo saltado: carne tierna juntos con papas fritas, acompañado de arroz</h4>
-              <h3>S/. 18.00</h3>
-              <button @click="send_order">Ordenar</button>
+              <p>{{item.name}}: {{item.description}}</p>
+              <p>S/. {{item.price}}</p>
+              <button @click="add_order(index)">Ordenar</button>
             </div>
           </div>
         </div>
@@ -72,19 +56,37 @@
 </template>
 
 <script>
-import { state } from '@/socket'
+import { socket, state } from '@/socket'
 export default {
   name: 'HomeView',
   components: {
   },
+  data(){
+    return {
+      menu_items: [],
+      order : {
+        time:'',
+        items: []
+      }
+    }
+  },
   methods:{
+    add_order(index){
+      this.menu_items = state.menu.items;
+      console.log("menu_items", this.menu_items)
+      
+      this.order.items.push(this.menu_items[index]);
+    },
     send_order(){
-      socket.emit("handle-order", { msg : 'este es un mensaje'})
+      let today = new Date();
+      this.order.time = today.toLocaleTimeString();
+      console.log(this.order);
+      socket.emit("handle-order", this.order)
     }
   },
   computed: {
     menu(){
-      return state.menu;
+      return state.menu.items;
     }
   }
 }

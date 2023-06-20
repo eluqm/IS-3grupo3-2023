@@ -79,6 +79,11 @@ import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
 export default {
   name:'OrdersView',
   components: { CompleteOrder},
+  data(){
+    return{
+      orders:[]
+    }
+  },
   computed:{
     connected(){
       return state.orders;
