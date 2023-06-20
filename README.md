@@ -50,15 +50,7 @@ npm run serve
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
-
-### Diagrama de Clases
-
-### Diagrama de Secuencia
-
-### Diagrama de Actividades
-
-### Diagrama de Componentes
-
+[![Diagrama de Casos de Uso](https://live.staticflickr.com/65535/52989712163_f9c988435d_b.jpg)](https://flic.kr/p/2kXZ3ZS)
 ### Diagrama de Base de Datos
 [![Diagrama de Base de Datos](https://live.staticflickr.com/65535/52972566443_0437bd0ec0_c.jpg)](https://flic.kr/p/2kV5Z6E)
 
