@@ -7,6 +7,7 @@ export const state = reactive({
   barEvents: []
 });
 
+
 // "undefined" means the URL will be computed from the `window.location` object
 //const URL = process.env.NODE_ENV === "production" ? undefined : "http://127.0.0.1:5000/";
 const URL =  "http://127.0.0.1:5000/";
@@ -31,8 +32,9 @@ socket.on("disconnect", () => {
   state.connected = false;
 });
 
-socket.on("order", (food) => {
-  state.orders.push(food);
+socket.on('order-updated', (orders) => {
+
+  state.orders = JSON.parse(orders); // Convert the queue to an array for Vue reactivity
 });
 
 socket.on("foo", (...args) => {
