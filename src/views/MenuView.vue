@@ -2,59 +2,41 @@
     <div class="container">
         <main>
             <h1>Menu</h1>
-            <div class="current-menu">
+            <div class="menu">
+              <div v-if="active" class="current-menu">
                 <h2>Menu en curso</h2>
-                <h3>No hay un menú en curso</h3>
-            </div>
-            <div class="menus">
-                <h2>Menus disponibles</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre del menu</th>
-                            <th>Descripción</th>
-                            <th>Cantidad de platos</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(menu, index) in menus" :key="index">
-                            <td>{{ menu.name }}</td>
-                            <td>{{ menu.description }}</td>
-                            <td>  -  </td>
-                            <td class="primary">
-                                <button class="select-menu" @click="getItems(menu.id_menu)">
-                                    Seleccionar
-                                </button>
-                            </td>
-                        </tr>                        
-                    </tbody>
-                </table>                
+                <div class="menu-data">
+                  <h2>{{menu.name}}</h2>
+                  <h2>{{menu.description}}</h2>
+                </div>
+              </div>
+              <h3 v-else>No hay un menú en curso</h3>
+              <ModalMenus :selectMenu="setMenu"/>
             </div>
             <div class="items">
               <h2>Seleccione la cantidad de porciones que hay</h2>
-              <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre del plato</th>
-                            <th>Descripción</th>
-                            <th>Imagen</th>
-                            <th>Cantidad de platos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in menu_items" :key="index">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.description }}</td>
-                            <td>  -  </td>
-                            <td>
-                                <input type="number" v-model="item.amount">
-                            </td>
-                        </tr>                        
-                    </tbody>
-                </table>
-                <button @click="sendMenu">Aceptar</button>
+              <div v-for="(item, index) in items" :key="index" class="item" :class="getClassColor(item)">
+                <div class="image">
+                  <img :src="item.image" alt="">
+                </div>
+                <div class="data">
+                  <div class="description">
+                    <p><strong>{{item.name}}</strong></p>
+                    <p>{{item.description}}</p>
+                  </div>
+                  <div class="amount">
+                    <button @click="decreaseAmount(item.id_item, index)" :disabled="item.enabled" :class="{'disabled': item.enabled}">-</button>
+                    <p>{{item.amount}}</p>
+                    <button @click="increaseAmount(item.id_item, index)" :disabled="item.enabled" :class="{'disabled': item.enabled}">+</button>
+                  </div>
+                  <div class="activation">
+                    <button :class="{'disabled': !item.enabled}" @click="disableItem(item.id_item, index)">Deshabilitar</button>
+                    <button :class="{'disabled': item.enabled}" @click="enableItem(item.id_item, index)">Habilitar</button>
+                  </div>
+                </div>
+              </div>
             </div>
+            
         </main>
         <div class="right">
 
@@ -64,15 +46,21 @@
 
 <script>
 import { socket, state } from '@/socket'
+import ModalMenus from '../components/MenuView/ModalSlider.vue'
 export default {
   name: 'MenuView',
+  components: {
+    ModalMenus
+  },
   data(){
     return {
         menu_items: []
-        //menus : []
     }
   },
   methods:{
+    setMenu(menu){
+      socket.emit("set-menu",menu);
+    },
     getItems(id_menu){
       socket.emit("get-items-from-menu", id_menu , ()=>{});
       this.menu_items =  state.items_from_menu;
@@ -80,20 +68,62 @@ export default {
     sendMenu(){
       console.log("menu_items",this.menu_items)
       socket.emit("handle-menu", this.menu_items,()=>{})
-    }
-  },
-  mounted(){
-    socket.emit("get-menus", {}, ()=>{
+    },
+    enableItem(id_item, index){
+      state.menu.items[index].enabled = true;
+      socket.emit("enable-item", state.menu.items[index]);
+      //aumentar el seteo del amount del menu
+    },
+    disableItem(id_item, index){
+      state.menu.items[index].enabled = false;
+      socket.emit("disable-item", state.menu.items[index]);
+      //aumentar el seteo del amount del menu
+    },
+    increaseAmount(id_item , index){
+      console.log("Aumente");
+      state.menu.items[index].amount ++;
+      //solo con el statement de arriba deberia mirar
+      //cambiar el valor por pantalla
+      //recien cuando se habilita se envio al servidor
 
-    })
+    },
+    decreaseAmount(id_item, index){
+      console.log("Disminui");
+      if(state.menu.items[index].amount > 0)
+        state.menu.items[index].amount --;
+    }
+
+    
   },
   computed: {
     menus(){
         return state.menus;
     },
+    menu(){
+      return state.menu
+    },
     items(){
-      return state.items_from_menu;
+      return state.menu.items;
+    },
+    active(){
+      if(state.menu.name){
+        return true;
+      }
+      return false;
+    },
+    getClassColor(){
+      return function(item){
+        return {
+        'green': item.enabled && item.amount > 0,
+        'orange': !item.enabled && item.amount > 0,
+        'red': !item.enabled && item.amount === 0 ,
+        }
+      };
     }
+  },
+  mounted(){
+    console.log(state.menu)
+    socket.emit("get-complete-menu");
   }
 }
 </script>
@@ -108,86 +138,94 @@ export default {
 main {
   margin-top: 1rem;
 }
-main .current-menu{
+main .menu{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
 }
-main .menus{
+
+.menu .current-menu .menu-data{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border-radius: 2rem;
+  padding: 1.5rem;
+} 
+
+.items{
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.8rem;
 }
-main .menus table{
-  width: 100%;
-  padding: var(--card-padding);
+
+.items .green{
+  background: green;
+}
+.items .orange{
+  background: orange;
+}
+
+.items .red{
+  background: red;
+}
+
+.item{
+  display: flex;
+  justify-content: center;
   align-items: center;
-  border-spacing: 0 1rem;
+  background: rgb(191, 246, 191);
+  width: 45rem;
+  height: 14rem;
 }
 
-main .menus table:hover{
-  box-shadow: none;
+
+
+.item .image{
+  width: 16rem;
+  height: 11rem;
+  margin: 1rem 1.5rem;
+}
+.item .image img{
+  width: 15rem;
+  height: 10rem;
+  border-radius: 1rem;
 }
 
-main .menus table tbody tr{
-    background: white;
-}
-
-main .menus table tbody td{
-  height: 4rem;
-  border-bottom: 1px solid var(--color-light);
-  text-align: center;
-}
-
-main .menus button{
-  text-align: center;
-  margin: 1rem auto;
-  color: white;
-  display: block;
-  border-radius: 0.4rem;
-}
-
-main .items{
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.8rem;
-}
-main .items table{
-  width: 100%;
-  padding: var(--card-padding);
+.item .data{
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  border-spacing: 0 1rem;
-}
-
-main .items table:hover{
-  box-shadow: none;
-}
-
-main .items table tbody tr{
-    background: white;
-}
-
-main .items table tbody td{
-  height: 4rem;
-  border-bottom: 1px solid var(--color-light);
-  text-align: center;
-}
-
-main .items input{
-  background: rgb(138, 118, 82);
-  height: 2rem;
-  text-align: center;
-  margin: 1rem auto;
+  gap: 0.5rem;
   color: white;
-  display: block;
-  border-radius: 0.4rem;
 }
-main .items button{
+.item .description{
+  color: white;
+  word-wrap: break-word;
+}
+
+.item .data .amount{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.item .activation{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem
+}
+
+.item .disabled{
+  opacity: 0.5;
+}
+
+.items button{
   display: flex;
   justify-content: center;
   align-items: center;

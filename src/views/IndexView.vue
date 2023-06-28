@@ -37,7 +37,7 @@
           <i class="material-symbols-sharp btn-receipt">receipt_long</i>
         </div>
         <div class="menu">
-          <div class="dish" v-for="(item, index) in menu" :key="index">
+          <div class="dish" v-for="(item, index) in items" :key="index">
             <img :src="item.image" alt="imagen">
             <div class="details">
               <p>{{item.name}}: {{item.description}}</p>
@@ -85,9 +85,14 @@ export default {
     }
   },
   computed: {
-    menu(){
-      return state.menu.items;
+    items(){
+      console.log("modificadno item")
+      return state.client_menu.items;
     }
+  },
+  mounted(){
+    console.log(state.client_menu.items)
+    socket.emit("get-ready-menu");
   }
 }
 </script>
@@ -398,8 +403,8 @@ export default {
   }
   .btn-receipt{
     position: sticky;
-    top: 40rem;
-    left: 32rem;
+    top: 5rem;
+    left: 20rem;
     width: 4rem;
     height: 4rem;
     color: black;
