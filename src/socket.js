@@ -6,16 +6,17 @@ export const state = reactive({
   client_menu : {items : []},
   //Variables para el Admin
   menu: {},
-
-
-
   menus: [],
+
+
+  
   items_from_menu:[],
 
   orders: [], /*cola de ordenes*/
   
   fooEvents: []/*este solo es para el ejemplo*/
 });
+
 
 // "undefined" means the URL will be computed from the `window.location` object
 //const URL = process.env.NODE_ENV === "production" ? undefined : "http://127.0.0.1:5000/";
@@ -42,12 +43,18 @@ socket.on("disconnect", () => {
   state.connected = false;
 });
 
+socket.on('order-updated', (orders) => {
+
+  state.orders = JSON.parse(orders); // Convert the queue to an array for Vue reactivity
+});
+
 /*Cliente*/
 socket.on("receive-menu", (menu) => {
   state.menu = menu;
 });
 socket.on("make-order", (food) => {
   state.orders.push(food);
+
 });
 socket.on("get-ready-menu", (client_menu) => {
   state.client_menu = client_menu;

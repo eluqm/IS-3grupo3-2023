@@ -56,6 +56,7 @@
 </template>
 
 <script>
+
 import { socket, state } from '@/socket'
 import ModalReceipt from '@/components/IndexView/ModalReceipt.vue'
 export default {
@@ -103,12 +104,13 @@ export default {
   mounted(){
     console.log(state.client_menu.items)
     socket.emit("get-ready-menu");
+
   }
 }
 </script>
 
 <style scoped>
-/*Estos dos estabana afuera*/
+/*Estos dos estaban afuera*/
 .logo{
   margin: 2rem;   
 }
