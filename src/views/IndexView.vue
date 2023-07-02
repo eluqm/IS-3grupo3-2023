@@ -33,9 +33,9 @@
           <h2>Seleccione los platos y bebidas que desee ordenar</h2>
           <h2>Luego presione el boton </h2>
         </div>
-        <div class="btn-receipt">
-          <i class="material-symbols-sharp btn-receipt">receipt_long</i>
-        </div>
+
+        <ModalReceipt :items="this.order.items" :sendOrder="this.sendOrder"/>
+
         <div class="menu">
           <div class="dish" v-for="(item, index) in items" :key="index">
             <img :src="item.image" alt="imagen">
@@ -57,13 +57,15 @@
 
 <script>
 import { socket, state } from '@/socket'
+import ModalReceipt from '@/components/IndexView/ModalReceipt.vue'
 export default {
   name: 'HomeView',
   components: {
+    ModalReceipt
   },
   data(){
     return {
-      menu_items: [],
+      //menu_items: [],
       order : {
         time:'',
         items: []
@@ -72,23 +74,31 @@ export default {
   },
   methods:{
     add_order(index){
-      this.menu_items = state.menu.items;
-      console.log("menu_items", this.menu_items)
-      
-      this.order.items.push(this.menu_items[index]);
+      let item = this.items[index];
+      item.amount = 1;
+      console.log("item añadido", item);
+      this.order.items.push(item);
     },
-    send_order(){
+    sendOrder(){
       let today = new Date();
       this.order.time = today.toLocaleTimeString();
       console.log(this.order);
       socket.emit("handle-order", this.order)
+      this.order = {
+        time:'',
+        items: []
+      };
     }
   },
   computed: {
     items(){
       console.log("modificadno item")
       return state.client_menu.items;
-    }
+    },
+    length_ordered_items(){
+      return this.order.items.length;
+    },
+
   },
   mounted(){
     console.log(state.client_menu.items)
