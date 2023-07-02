@@ -1,10 +1,20 @@
 import { reactive } from "vue";
-//import socketIO from "socket.io-client";
 import {io} from "socket.io-client";
 export const state = reactive({
   connected: false,
-  orders: [],
-  barEvents: []
+  //Variables para el Cliente
+  client_menu : {items : []},
+  //Variables para el Admin
+  menu: {},
+  menus: [],
+
+
+  
+  items_from_menu:[],
+
+  orders: [], /*cola de ordenes*/
+  
+  fooEvents: []/*este solo es para el ejemplo*/
 });
 
 
@@ -24,10 +34,11 @@ export const socket = io(URL
   */
 );
 
+/*Connection*/
+
 socket.on("connect", () => {
   state.connected = true;
 });
-
 socket.on("disconnect", () => {
   state.connected = false;
 });
@@ -37,10 +48,45 @@ socket.on('order-updated', (orders) => {
   state.orders = JSON.parse(orders); // Convert the queue to an array for Vue reactivity
 });
 
-socket.on("foo", (...args) => {
-  state.fooEvents.push(args);
+/*Cliente*/
+socket.on("receive-menu", (menu) => {
+  state.menu = menu;
+});
+socket.on("make-order", (food) => {
+  state.orders.push(food);
+
+});
+socket.on("get-ready-menu", (client_menu) => {
+  state.client_menu = client_menu;
+});
+socket.on("get-item-from-ready-menu", (item) => {
+  state.client_menu.items.push(item);
 });
 
-socket.on("bar", (...args) => {
-  state.barEvents.push(args);
+/*Admin*/
+socket.on("get-complete-menu", (menu) => {
+  if(menu.name){
+    console.log("Se recibio el menu completo")
+    state.menu = menu;
+  }
+});
+socket.on("get-menus", (menus) => {
+  state.menus = menus;
+});
+
+socket.on("set-menu", (menu) => {
+  state.menu = menu;
+});
+
+socket.on("get-items-from-menu", (items) => {
+  state.items_from_menu = items;
+});
+
+socket.on("receive-order", (food) => {
+  state.orders.push(food);
+});
+
+/*Exameple*/
+socket.on("foo", (...args) => {
+  state.fooEvents.push(args);
 });

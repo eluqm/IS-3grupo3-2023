@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <table>
+        <table class="table-waiting-orders">
             <thead>
                 <tr>
                     <th>Mesa: 12</th>
@@ -74,43 +74,8 @@ export default {
 .warning {
   color: var(--color-warning);
 }
-.container {
-  grid-template-columns: 14rem auto 23rem;
-}
 
-/*main*/
-
-main {
-  margin-top: 1rem;
-}
-
-main .date{
-  display: inline-block;
-  background: var(--color-light);
-  border-radius: var(--border-radius-1);
-  margin-top: 1rem;
-  padding: 0.5rem 1.6rem;
-}
-
-main .date input[type="date"] {
-  background: transparent;
-  color: var(--color-dark);
-}
-
-
-
-
-
-
-main .recent-orders{
-  margin-top: 2rem;
-}
-
-main .recent-orders h2{
-  margin-bottom: 0.8rem;
-}
-
-main .recent-orders table{
+table{
   background: var(--color-white);
   border-radius: var(--card-border-radius);
   width: 100%;
@@ -120,11 +85,11 @@ main .recent-orders table{
   transition: all 300ms ease;
 }
 
-main .recent-orders table:hover{
+table:hover{
   box-shadow: none;
 }
 
-main table tbody td{
+table tbody td{
   height: 2.8rem;
   border-bottom: 1px solid var(--color-light);
   color: var(--color-dark-variant);
@@ -132,119 +97,41 @@ main table tbody td{
   padding: 0.1rem 0.5rem;
 }
 
-main table tbody tr:last-child td{
+table tbody tr:last-child td{
   border: none;
 }
 
-main table button{
+th:nth-child(1),
+td:nth-child(1) {
+  width: 8rem;
+}
+th:nth-child(2),
+td:nth-child(2) {
+  width: auto;
+}
+
+/* Define el ancho de la tercera columna */
+th:nth-child(3),
+td:nth-child(3) {
+  width: 4rem;
+}
+th:nth-child(4),
+td:nth-child(4) {
+  width: 8rem;
+}
+
+table button{
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
 }
-main .recent-orders a{
+a{
   text-align: center;
   margin: 1rem auto;
   color: var(--color-primary);
   display: block;
 }
 
-/* RIGHT TOP */
-.right{
-  margin-top: 1.4rem;
-}
-.right .top{
-  display: flex;
-  justify-content: flex-end;
-  gap: 2rem;
-}
-.right .top button{
-  display: none;
-}
-.right .top .theme-toggler{
-  width: 4.2rem;
-  height: 1.6rem;
-  background: var(--color-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: var(--border-radius-1);
-  /*color: var(--color-dark);*/
-}
 
-.right .top .theme-toggler i{
-  font-size: 1.2rem;
-  width: 50%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-}
-.right .top .theme-toggler i.active{
-  color: var(--color-white);
-  background: var(--color-primary);
-  border-radius: var(--border-radius-1);
-}
-
-.right .top .profile{
-  display: flex;
-  gap: 2rem;
-  text-align: right;
-}
-.profile-photo{
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 50%;
-  overflow: hidden;
-}
-/*END RIGHT TOP*/
-.right .div-frequency{
-  margin-top: 1rem;
-}
-.right .div-frequency h2{
-  margin-bottom: 0.8rem;
-}
-.right .div-frequency .frequency{
-  background: var(--color-white);
-  padding: var(--card-padding);
-  border-radius: var(--card-border-radius);
-  box-shadow: var(--box-shadow);
-  transition: all 300ms ease;
-  /*justify-content: center;*/
-}
-.right .div-frequency .frequency .frequency-item{
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.2rem;
-}
-.right .div-frequency .frequency .frequency-item .progress-line{
-  border-radius: 0.5rem;
-  height: 1rem;
-  background: red;
-  color: white;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.right .div-personnel{
-  margin-top: 1rem;
-}
-.right .div-personnel .personnel {
-  margin-top: 0.5rem;
-  background: var(--color-white);
-  padding: var(--card-padding);
-  border-radius: var(--card-border-radius);
-  box-shadow: var(--box-shadow);
-  transition: all 300ms ease;
-  display: flex;
-  gap: 1.5rem;
-}
-.right .div-personnel .personnel .personnel-item{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 3rem;
-  gap: 0.4rem;
-}
 </style>

@@ -2,9 +2,6 @@
   <div class="app">
     <router-view/>
   </div>
-    <!-- En caso se necesita algo gloabalemnte se declara aqui-->
-    <!-- <router-link to="/">Home</router-link>  -->
-  
 </template>
 
 <style>
@@ -144,5 +141,8 @@ b {
 
 .warning {
   color: var(--color-warning);
+}
+.bold{
+  font-weight: bold;
 }
 </style>
