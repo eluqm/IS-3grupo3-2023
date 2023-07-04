@@ -2,15 +2,11 @@
   <div class="container">
     <main>
       <h1>Ordenes</h1>
-      <div class="date">
-          <input type="date">
-      </div>
-      <ul>
-        <li v-for="(objeto, index) in connected.slice(0, 2)" :key="index">{{ objeto }}</li>
-      </ul>
+      
       <div class="waiting-orders">
         <h2>Ordenes en espera</h2>
         <table>
+          <!-- Encabezados de la tabla -->
           <thead>
             <tr>
               <th>#ID Orden</th>
@@ -22,9 +18,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(order, index) in connected.slice(0, 2)" :key="index">
+            <!-- Iterar sobre las órdenes y mostrar los datos -->
+            <tr v-for="order in orders" :key="order.order_id">
               <td>{{ order.order_id }}</td>
-              <td>{{ order.msg }}</td>
+              <td>{{ order.table_number }}</td>
+              <td>{{ order.items.length }}</td>
+              <td>{{ order.timestamp }}</td>
               <td>{{ order.status }}</td>
               <td class="primary">Detalles</td>
             </tr>
@@ -94,22 +93,34 @@
 </template>
 
 <script>
-import {state} from '@/socket'
-import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
+import axios from 'axios';
+import CompleteOrder from '../components/OrdersView/CompleteOrder.vue';
+
 export default {
-  name:'OrdersView',
-  components: { CompleteOrder},
-  data(){
-    return{
-      orders:[]
-    }
+  name: 'OrdersView',
+  components: { CompleteOrder },
+  data() {
+    return {
+      orders: [],
+      connected: false // Agregar la propiedad connected y establecer su valor inicial
+    };
   },
-  computed:{
-    connected(){
-      return state.orders;
+  mounted() {
+    this.fetchOrders();
+  },
+  methods: {
+    fetchOrders() {
+      axios.get('/api/orders')
+        .then(response => {
+          this.orders = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching orders:', error);
+        });
     }
   }
-}
+};
+
 </script>
 
 <style scoped>
