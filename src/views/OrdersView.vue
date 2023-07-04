@@ -6,10 +6,30 @@
           <input type="date">
       </div>
       <ul>
-        <li v-for="(objeto, index) in connected" :key="index">{{ objeto }}</li>
+        <li v-for="(objeto, index) in connected.slice(0, 2)" :key="index">{{ objeto }}</li>
       </ul>
       <div class="waiting-orders">
         <h2>Ordenes en espera</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#ID Orden</th>
+              <th>#Mesa</th>
+              <th>#Items</th>
+              <th>Hora</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(order, index) in connected.slice(0, 2)" :key="index">
+              <td>{{ order.order_id }}</td>
+              <td>{{ order.msg }}</td>
+              <td>{{ order.status }}</td>
+              <td class="primary">Detalles</td>
+            </tr>
+          </tbody>
+        </table>
         <CompleteOrder/>
         <a href="#">Show all</a>
       </div>

@@ -34,12 +34,6 @@
                 </tr>
             </thead>
             <tbody>
-               <tr v-for="order in connected" :key="order.order_id">
-                  <td>{{ order.order_id }}</td>
-                  <td>{{ order.msg }}</td>
-                  <td>{{ order.status }}</td>
-                  <td class="primary">Detalles</td>
-                </tr>
                 <tr>
                   <td>85631</td>
                   <td>8</td>
