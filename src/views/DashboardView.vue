@@ -6,10 +6,22 @@
           <input type="date">
       </div>
       <ul>
-        <li v-for="(objeto, index) in connected" :key="index">{{ objeto }}</li>
+        <li v-for="order in connected" :key="order.order_id">
+          <h3>Order ID: {{ order.order_id }}</h3>
+          <p>Message: {{ order.msg }}</p>
+          <p>Status: {{ order.status }}</p>
+          <ul>
+            <li v-for="dish in order.dishes" :key="dish.dishId">
+              <p>Dish ID: {{ dish.dishId }}</p>
+              <p>Name: {{ dish.name }}</p>
+              <p>Status: {{ dish.status }}</p>
+            </li>
+          </ul>
+        </li>
       </ul>
       <div class="recent-orders">
         <h2>Ordenes recientes</h2>
+        
         <table>
             <thead>
                 <tr>
@@ -22,12 +34,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
+               <tr v-for="order in connected" :key="order.order_id">
+                  <td>{{ order.order_id }}</td>
+                  <td>{{ order.msg }}</td>
+                  <td>{{ order.status }}</td>
                   <td class="primary">Detalles</td>
                 </tr>
                 <tr>
@@ -197,6 +207,7 @@ main .recent-orders table{
 main .recent-orders table:hover{
   box-shadow: none;
 }
+
 
 main table tbody td{
   height: 2.8rem;

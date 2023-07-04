@@ -8,16 +8,18 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "socket.io-client": "^4.6.1",
+    "socket.io-client": "^4.6.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue-socket.io": "^3.0.10",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0"
+    "@vue/cli-service": "~5.0.0",
+    "webpack": "^5.87.0"
   },
   "browserslist": [
     "> 1%",
