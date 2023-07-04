@@ -21,46 +21,31 @@
       </ul>
       <div class="recent-orders">
         <h2>Ordenes recientes</h2>
-        
+
         <table>
-            <thead>
-                <tr>
-                    <th>#ID Orden</th>
-                    <th>#Mesa</th>
-                    <th>#Items</th>
-                    <th>Hora</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>
-                
-            </tbody>
+          <thead>
+            <tr>
+              <th>#ID Orden</th>
+              <th>#Mesa</th>
+              <th>#Items</th>
+              <th>Hora</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Mostrar solo las primeras dos filas -->
+            <tr v-for="(order, index) in connected" :key="index" v-if="index < 2">
+              <td>{{ order.order_id }}</td>
+              <td>{{ order.table }}</td>
+              <td>{{ order.items }}</td>
+              <td>{{ order.time }}</td>
+              <td :class="order.statusClass">{{ order.status }}</td>
+              <td class="primary">Detalles</td>
+            </tr>
+          </tbody>
         </table>
+
         <a href="#">Show all</a>
       </div>
     </main>

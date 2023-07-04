@@ -101,8 +101,7 @@ export default {
   components: { CompleteOrder },
   data() {
     return {
-      orders: [],
-      connected: false // Agregar la propiedad connected y establecer su valor inicial
+      orders: []  // Inicializar la propiedad orders como un array vacío
     };
   },
   mounted() {
@@ -112,7 +111,7 @@ export default {
     fetchOrders() {
       axios.get('/api/orders')
         .then(response => {
-          this.orders = response.data;
+          this.orders = response.data.slice(0, 2);  // Limitar las órdenes a 2 elementos
         })
         .catch(error => {
           console.error('Error fetching orders:', error);
@@ -120,7 +119,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style scoped>
