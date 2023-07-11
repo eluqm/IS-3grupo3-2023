@@ -93,7 +93,7 @@
             </div>
             <p>5</p>
           </div>
-        </div>
+        </div> 
       </div>
       <!--  END DIV-FREQUENCY  -->
       <div class="div-personnel">
