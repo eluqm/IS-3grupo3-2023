@@ -5,20 +5,7 @@
       <div class="date">
           <input type="date">
       </div>
-      <ul>
-        <li v-for="order in connected" :key="order.order_id">
-          <h3>Order ID: {{ order.order_id }}</h3>
-          <p>Message: {{ order.msg }}</p>
-          <p>Status: {{ order.status }}</p>
-          <ul>
-            <li v-for="dish in order.dishes" :key="dish.dishId">
-              <p>Dish ID: {{ dish.dishId }}</p>
-              <p>Name: {{ dish.name }}</p>
-              <p>Status: {{ dish.status }}</p>
-            </li>
-          </ul>
-        </li>
-      </ul>
+      
       <div class="recent-orders">
         <h2>Ordenes recientes</h2>
         
@@ -34,10 +21,12 @@
                 </tr>
             </thead>
             <tbody>
-               <tr v-for="order in connected" :key="order.order_id">
-                  <td>{{ order.order_id }}</td>
-                  <td>{{ order.msg }}</td>
-                  <td>{{ order.status }}</td>
+               <tr v-for="order in summary" :key="order.id_order">
+                  <td>{{ order.id_order }}</td>
+                  <td>{{ order.id_table }}</td>
+                  <td>{{ order.n_items }}</td>
+                  <td>{{ order.time }}</td>
+                  <td class="warning">{{ order.state }}</td>
                   <td class="primary">Detalles</td>
                 </tr>
                 <tr>
@@ -47,24 +36,7 @@
                   <td>15:35</td>
                   <td class="warning">Pendiente</td>
                   <td class="primary">Detalles</td>
-                </tr>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>
-                
+                </tr>  
             </tbody>
         </table>
         <a href="#">Show all</a>
@@ -125,7 +97,7 @@
 </template>
 
 <script>
-import {state} from '@/socket'
+import {socket, state} from '@/socket'
 //import Sidebar from '../components/Sidebar.vue'
 import Sidebar from '../components/Sidebar.vue'
 import Profile from '../components/Profile.vue'
@@ -135,7 +107,13 @@ export default {
   computed:{
     connected(){
       return state.orders;
+    },
+    summary(){
+      return state.summary_orders;
     }
+  },
+  mounted(){
+    socket.emit("get-summary");
   }
 }
 </script>

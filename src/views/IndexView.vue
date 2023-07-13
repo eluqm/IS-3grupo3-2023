@@ -1,56 +1,26 @@
 <template>
     <div class="container">
-      <div class="presentation">
-        <div class="title">
-          <p>Bievenido</p>
-          <p>a</p>
-        </div>
-        <div class="logo">
-          <i class="material-symbols-sharp">restaurant_menu</i>
-          <div class="right">
-            <p class="name">E-restaurant</p>
-            <p class="slogan">Mindless, simplest, fastest</p>
-          </div>
-        </div>
-        <div class="description">
-          <p>El mejor lugar</p>
-          <p>para</p>
-          <p class="bold">ORDENAR RAPIDO</p>
-          <p>o</p>
-          <p>disfrutar de</p>
-          <p>una</p>
-          <p class="bold">RESERVACIÓN</p>
-        </div>
-        <div class="options">
-          <button class="slider">Ir a Ordernar</button>
-          <button class="slider">Ir a reservaciones</button>
-        </div>
-      </div>
+      <Presentation/>
       <div class="orders">
         <div class="instructions">
-          <h1>Ordene lo que desee</h1>
-          <hr>
-          <h2>Seleccione los platos y bebidas que desee ordenar</h2>
-          <h2>Luego presione el boton </h2>
+          <p class="title">Ordene lo que desee</p>
+          <p>Seleccione los platos y bebidas que desee ordenar</p>
+          <p>Luego presione el boton </p>
         </div>
 
-        <ModalReceipt :items="this.order.items" :sendOrder="this.sendOrder"/>
+        <ModalReceipt :_items="this.order.items" 
+        :sendOrder="this.sendOrder" :cancelItem="this.cancelItem" :setTable="this.setTable"/>
 
         <div class="menu">
-          <div class="dish" v-for="(item, index) in items" :key="index">
-            <img :src="item.image" alt="imagen">
-            <div class="details">
-              <p>{{item.name}}: {{item.description}}</p>
-              <p>S/. {{item.price}}</p>
-              <button @click="add_order(index)">Ordenar</button>
-            </div>
-          </div>
+          <ItemIndex v-for="(item, key, index) in state.client_menu.items" :key="index" 
+          :item="item" :index="index" 
+          :addItem="addItem" :cancelItem="cancelItem"/>
         </div>
-        
+
+        <div class="answer" v-if="show_answer_message">
+          <p>{{answer_message}}</p>
+        </div>
       </div>
-    </div>
-    <div>
-      <button @click="send_order">Enviar orden</button>
     </div>
     
 </template>
@@ -58,223 +28,156 @@
 <script>
 
 import { socket, state } from '@/socket'
+import Presentation from '@/components/IndexView/Presentation.vue'
 import ModalReceipt from '@/components/IndexView/ModalReceipt.vue'
+import ItemIndex from '@/components/IndexView/ItemIndex.vue'
 export default {
   name: 'HomeView',
   components: {
-    ModalReceipt
+    Presentation,
+    ModalReceipt,
+    ItemIndex
+
   },
   data(){
     return {
+      state,
       //menu_items: [],
       order : {
         time:'',
+        id_table: 0,
         items: []
-      }
+      },
+      id_table : 0,
+      show_answer_message: false,
+      answer_message: ""
     }
   },
   methods:{
-    add_order(index){
-      let item = this.items[index];
-      item.amount = 1;
-      console.log("item añadido", item);
-      this.order.items.push(item);
+    addItem(item, index){
+      state.client_menu.items[item.id_item].amount = 1
+      //let item = this.items[index];
+      //item.amount = 1;
+      //this.order.items.push(item);
+      //this.items[index].bought = true;
+    },
+    cancelItem(item, index){
+      state.client_menu.items[item.id_item].amount = 0
+      //this.order.items.splice(index, 1);
+      //this.items[index].bought = true;
     },
     sendOrder(){
       let today = new Date();
-      this.order.time = today.toLocaleTimeString();
+      //this.order.time = today.toLocaleTimeString();
+      let time = today.toLocaleTimeString();
       console.log(this.order);
-      socket.emit("handle-order", this.order)
-      this.order = {
-        time:'',
-        items: []
+      let order = {
+        time,
+        id_table: this.id_table,
+        items: state.client_menu.items
       };
+      socket.emit("handle-order", order)
+      //this.order.items = [];
+      setTimeout(() => {
+        console.log("3 segundos")
+        if(this.answer_order.state > 0){
+          if(this.answer_order.state === 1){
+            this.answer_message = "Pedido aceptado";
+            //location.reload()
+            //socket.emit("get-ready-menu");
+          }
+          if(this.answer_order.state === 2){
+            this.answer_message = "Pedido rechazado";
+          }
+          this.show_answer_message = true;
+          console.log(this.show_answer_message = true);
+          setTimeout(()=>{
+            this.show_answer_message=false;
+            this.answer_order.state = 0;
+          }, 3000)
+        }
+      }, 3000);
+    },
+    setTable(id_table){
+      //this.order.id_table = id_table;
+      this.id_table = id_table;
     }
   },
   computed: {
-    items(){
-      console.log("modificadno item")
-      return state.client_menu.items;
-    },
+    //
+    //items(){
+    //  console.log("modificadno item")
+    //  return state.client_menu.items;
+    //},
     length_ordered_items(){
       return this.order.items.length;
     },
+    answer_order(){
+      return state.answer_order;
+    }
 
   },
   mounted(){
-    console.log(state.client_menu.items)
     socket.emit("get-ready-menu");
-
   }
 }
 </script>
 
 <style scoped>
-/*Estos dos estaban afuera*/
-.logo{
-  margin: 2rem;   
-}
-.options{
-  display: flex;
-  justify-content: space-around;
-}
 .container{
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
     background: rgb(236,33,19);
     background: linear-gradient(90deg, rgba(236,33,19,1) 0%, rgba(242,112,53,1) 40%, rgba(255,218,0,1) 100%);
     color: white;
   }
-  .presentation{
-    width: 100vw;
-    height: 100vh;
-  }
-
-@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');
-  .presentation .title p{
-    font-family: "Annie Use Your Telescope", cursive;
-    font-weight: bold;
-    text-align: center;
-    font-size: 35px;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    text-shadow: rgb(0, 0, 0) -4px 4px 3px;
-  }
-
-  .presentation .logo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    color: black;
-    padding: 0.5rem;
-  }
-  .presentation .logo i{
-    font-weight: bold;
-    font-size: 7rem;
-  }
-  .presentation .logo .right{
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .presentation .logo .right .name{
-    font-weight: bold;
-    font-size: 3rem;
-    width: 100%; /* Hace que el texto ocupe todo el ancho disponible */
-    white-space: nowrap; /* Evita el salto de línea automático */
-    /*overflow: hidden; *//* Oculta cualquier contenido que desborde */
-    text-overflow: ellipsis;
-    text-align: justify;
-    letter-spacing: -3px; /* Ajusta el espaciado entre letras */
-  }
-  .presentation .logo .right .slogan{
-    font-weight: bold;
-    font-size: 1.5rem;
-    width: 100%; /* Hace que el texto ocupe todo el ancho disponible */
-    white-space: nowrap; /* Evita el salto de línea automático */
-    /*overflow: hidden; *//* Oculta cualquier contenido que desborde */
-    text-overflow: ellipsis;
-    text-align: justify;
-    letter-spacing: -1px; /* Ajusta el espaciado entre letras */
-  }
-
-  .presentation .description{
-    font-size: 2rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .presentation .description p{
-    font-family: "Annie Use Your Telescope", cursive;
-    font-weight: bold;
-    text-align: center;
-    font-size: 25px;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    text-shadow: rgb(0, 0, 0) -4px 4px 3px;
-  }
-  .presentation .options{
-    margin-top: 3rem;
-  }
-
-  .presentation .options button{
-  background-color: #c2fbd7;
-  border-radius: 100px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: green;
-  cursor: pointer;
-  display: inline-block;
-  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-  padding: 7px 20px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 250ms;
-  border: 0;
-  font-size: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  
+.orders{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.instructions{
+  margin: 1rem 2rem;
+  font-family: "Annie Use Your Telescope", cursive;
+  font-weight: bold;
+  text-align: left;
+  font-size: 2rem;
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+  text-shadow: rgb(0, 0, 0) -4px 4px 3px;
+}
+.instructions .title{
+  font-size: 3rem;
 }
 
-.presentation .options button:hover {
-  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
-  transform: scale(1.05) rotate(-1deg);
-  }
+.menu{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
 
-  .instructions{
-    margin: 1rem 2rem;
-    font-family: "Annie Use Your Telescope", cursive;
-    font-weight: bold;
-    text-align: left;
-    font-size: 25px;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    text-shadow: rgb(0, 0, 0) -4px 4px 3px;
-  }
-  .dish{
-    display: block;
-    padding: 0;
-    background: white;
+.answer{
+    position: fixed;
+    top: 80%;
+    left: 45%;
+    width: 25rem;
+    height: 3rem;
+    background: rgb(183, 183, 183);
+    color: azure;
+    border-radius: 0rem;
+    border: 1px solid black;
     color: black;
-    margin: 0.8rem 0;
-  }
-  .dish .details{
-    display: grid;
-    grid-template-columns: auto 5rem 8rem;
-    justify-items: center;
-    align-items: center;
-    height: 4rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: bold;
-  }
-  .dish .details button{
-    background: rgb(97, 225, 97);
-    color: white;
-  }
-  .dish .details button:hover{
-    background: rgb(69, 225, 69);
-    color: white;
-  }
-
-  .btn-receipt{
-    position: sticky;
-    top: 40rem;
-    left: 32rem;
-    width: 4rem;
-    height: 4rem;
-    color: black;
-    background: rgb(0, 255, 213);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2rem;
   }
+
 /*Este e sun ejemplo de como se deben realizar las media queries*/
 /*=====MEDIA QUERIES ===========*/
 @media screen and (max-width: 700px){
@@ -290,102 +193,7 @@ export default {
     background: linear-gradient(90deg, rgba(236,33,19,1) 0%, rgba(242,112,53,1) 40%, rgba(255,218,0,1) 100%);
     color: white;
   }
-  .presentation{
-    width: 100vw;
-    height: 100vh;
-  }
-
-@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');
-  .presentation .title p{
-    font-family: "Annie Use Your Telescope", cursive;
-    font-weight: bold;
-    text-align: center;
-    font-size: 35px;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    text-shadow: rgb(0, 0, 0) -4px 4px 3px;
-  }
-
-  .presentation .logo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    color: black;
-    padding: 0.5rem;
-  }
-  .presentation .logo i{
-    font-weight: bold;
-    font-size: 7rem;
-  }
-  .presentation .logo .right{
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .presentation .logo .right .name{
-    font-weight: bold;
-    font-size: 3rem;
-    width: 100%; /* Hace que el texto ocupe todo el ancho disponible */
-    white-space: nowrap; /* Evita el salto de línea automático */
-    /*overflow: hidden; *//* Oculta cualquier contenido que desborde */
-    text-overflow: ellipsis;
-    text-align: justify;
-    letter-spacing: -3px; /* Ajusta el espaciado entre letras */
-  }
-  .presentation .logo .right .slogan{
-    font-weight: bold;
-    font-size: 1.5rem;
-    width: 100%; /* Hace que el texto ocupe todo el ancho disponible */
-    white-space: nowrap; /* Evita el salto de línea automático */
-    /*overflow: hidden; *//* Oculta cualquier contenido que desborde */
-    text-overflow: ellipsis;
-    text-align: justify;
-    letter-spacing: -1px; /* Ajusta el espaciado entre letras */
-  }
-
-  .presentation .description{
-    font-size: 2rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .presentation .description p{
-    font-family: "Annie Use Your Telescope", cursive;
-    font-weight: bold;
-    text-align: center;
-    font-size: 25px;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    text-shadow: rgb(0, 0, 0) -4px 4px 3px;
-  }
-  .presentation .options{
-    margin-top: 3rem;
-  }
-
-  .presentation .options button{
-  background-color: #c2fbd7;
-  border-radius: 100px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: green;
-  cursor: pointer;
-  display: inline-block;
-  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-  padding: 7px 20px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 250ms;
-  border: 0;
-  font-size: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.presentation .options button:hover {
-  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
-  transform: scale(1.05) rotate(-1deg);
-  }
+  
 
   .instructions{
     margin: 1rem 2rem;
@@ -397,36 +205,12 @@ export default {
     background-color: transparent;
     text-shadow: rgb(0, 0, 0) -4px 4px 3px;
   }
-  .dish{
-    display: block;
-    padding: 0;
-    background: white;
-    color: black;
-    margin: 0.8rem 0;
-  }
-  .dish .details{
-    display: grid;
-    grid-template-columns: auto 5rem 8rem;
-    justify-items: center;
-    align-items: center;
-    height: 4rem;
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  .btn-receipt{
-    position: sticky;
-    top: 5rem;
-    left: 20rem;
-    width: 4rem;
-    height: 4rem;
-    color: black;
-    background: rgb(0, 255, 213);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2rem;
-  }
-  
+  .menu{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+}
 }
 </style>
   
