@@ -1,12 +1,12 @@
 <template>
     <button class="btn-receipt" @click="openModal()">
         <i class="material-symbols-sharp btn-receipt">receipt_long</i>
-        <p v-if="length > 0" class="badge">{{length}}</p>
+        <p v-if="client_menu.count_selected > 0" class="badge">{{client_menu.count_selected}}</p>
     </button>
     <div class="modal-overlay" :class="{active :showModal}">
         <div class="modal" ref="scrollableDiv">
             <h2>Seleccione la cantidad de porciones que desea</h2>
-            <template v-for="(item,key,index) in state.client_menu.items" :key="index">
+            <template v-for="(item,key,index) in client_menu.items" :key="index">
             <div v-if="item.amount > 0" class="item">
                     <p>{{item.name}}</p>
                     <p>{{item.description}}</p>
@@ -40,18 +40,18 @@
 </template>
 
 <script>
-import { socket, state } from '@/socket'
+import { client_menu } from '@/socket'
 export default {
     name: "ModalReceipt",
     props: {
-        _items : {type: Array, required: true},
+        _items : {type: Object, required: true},
         sendOrder: {type: Function, required: true},
         cancelItem: {type: Function, required: true},
         setTable : {type: Function, required: true}
     },
     data(){
         return{
-            state,
+            client_menu,
             showModal: false,
             menu_items: [],
             id_table: 0,
@@ -60,12 +60,9 @@ export default {
     },
     computed: {
         
-        computedItems(){
-            return this._items;
-        },
-        length(){
-            return this.computedItems.length;
-        }
+        //length(){
+            //return this.computedItems.length;
+        //}
     },
     methods: {
         openModal(){
@@ -75,14 +72,11 @@ export default {
             this.showModal = false;
         },
         increaseAmountItem(item, index){
-            //this.items[index].amount++;
-            state.client_menu.items[item.id_item].amount++;
+            client_menu.items[item.id_item].amount++;
         },
         decreaseAmountItem(item, index){
-            //if(this.items[index].amount > 1){
-            if(state.client_menu.items[item.id_item].amount > 1){
-                state.client_menu.items[item.id_item].amount--;
-                //this.items[index].amount--;
+            if(client_menu.items[item.id_item].amount > 1){
+                client_menu.items[item.id_item].amount--;
             }
         },
         makeOrder(){

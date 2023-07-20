@@ -26,17 +26,9 @@
                   <td>{{ order.id_table }}</td>
                   <td>{{ order.n_items }}</td>
                   <td>{{ order.time }}</td>
-                  <td class="warning">{{ order.state }}</td>
+                  <td class="warning">{{ state_order(order.state) }}</td>
                   <td class="primary">Detalles</td>
                 </tr>
-                <tr>
-                  <td>85631</td>
-                  <td>8</td>
-                  <td>4</td>
-                  <td>15:35</td>
-                  <td class="warning">Pendiente</td>
-                  <td class="primary">Detalles</td>
-                </tr>  
             </tbody>
         </table>
         <a href="#">Show all</a>
@@ -47,30 +39,14 @@
       <div class="div-frequency">
         <h2>Frecuencia de ordenes</h2>
         <div class="frequency">
-          <div class="frequency-item">
-            <div class="progress-line">
-              <p>Fuente 1</p>
+          <template v-for="(item, index) in state.frequency" :key="index">
+            <div v-if="item.amount > 0" class="frequency-item">
+              <div class="progress-line" :style="{'width': item.percentage +'%'}">
+                <p>{{item.name}}</p>
+              </div>
+              <p>{{item.amount}}</p>
             </div>
-            <p>20</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'75' +'%'}">
-              <p>Fuente 2</p>
-            </div>
-            <p>15</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'50' +'%'}">
-              <p>Fuente Mixta</p>
-            </div>
-            <p>10</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'25' +'%'}">
-              <p>Fuente 5</p>
-            </div>
-            <p>5</p>
-          </div>
+          </template>
         </div>
       </div>
       <!--  END DIV-FREQUENCY  -->
@@ -104,16 +80,45 @@ import Profile from '../components/Profile.vue'
 export default {
   name: 'DashboardView',
   components: {Sidebar, Profile},
+  data(){
+    return{
+      state
+    }
+  },
   computed:{
     connected(){
       return state.orders;
     },
     summary(){
       return state.summary_orders;
+    },
+    
+  },
+  methods:{
+    state_order(integer_state_order){
+      if(integer_state_order === 0){
+        return 'En espera';
+      }
+      if(integer_state_order === 1){
+        return 'En preparación';
+      }
+      if(integer_state_order === 0){
+        return 'Lista/Terminada';
+      }
+      if(integer_state_order === 0){
+        return 'Entregada';
+      }
+    },
+    frequency_width(percentage){
+      return {
+        width: percentage
+      }
     }
   },
   mounted(){
     socket.emit("get-summary");
+    socket.emit("set-frequency");
+    console.log(state.frequency)
   }
 }
 </script>

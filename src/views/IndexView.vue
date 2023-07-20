@@ -8,11 +8,11 @@
           <p>Luego presione el boton </p>
         </div>
 
-        <ModalReceipt :_items="this.order.items" 
+        <ModalReceipt :_items = client_menu.items
         :sendOrder="this.sendOrder" :cancelItem="this.cancelItem" :setTable="this.setTable"/>
 
         <div class="menu">
-          <ItemIndex v-for="(item, key, index) in state.client_menu.items" :key="index" 
+          <ItemIndex v-for="(item, key, index) in client_menu.items" :key="index" 
           :item="item" :index="index" 
           :addItem="addItem" :cancelItem="cancelItem"/>
         </div>
@@ -27,7 +27,7 @@
 
 <script>
 
-import { socket, state } from '@/socket'
+import { socket, client_menu } from '@/socket'
 import Presentation from '@/components/IndexView/Presentation.vue'
 import ModalReceipt from '@/components/IndexView/ModalReceipt.vue'
 import ItemIndex from '@/components/IndexView/ItemIndex.vue'
@@ -41,7 +41,7 @@ export default {
   },
   data(){
     return {
-      state,
+      client_menu,
       //menu_items: [],
       order : {
         time:'',
@@ -54,46 +54,39 @@ export default {
     }
   },
   methods:{
-    addItem(item, index){
-      state.client_menu.items[item.id_item].amount = 1
-      //let item = this.items[index];
-      //item.amount = 1;
-      //this.order.items.push(item);
-      //this.items[index].bought = true;
+    addItem(item){
+      client_menu.items[item.id_item].amount = 1
+      client_menu.count_selected++;
     },
-    cancelItem(item, index){
-      state.client_menu.items[item.id_item].amount = 0
-      //this.order.items.splice(index, 1);
-      //this.items[index].bought = true;
+    cancelItem(item){
+      client_menu.items[item.id_item].amount = 0
+      client_menu.count_selected--;
     },
     sendOrder(){
       let today = new Date();
-      //this.order.time = today.toLocaleTimeString();
       let time = today.toLocaleTimeString();
       console.log(this.order);
       let order = {
         time,
         id_table: this.id_table,
-        items: state.client_menu.items
+        items: client_menu.items
       };
       socket.emit("handle-order", order)
-      //this.order.items = [];
       setTimeout(() => {
-        console.log("3 segundos")
-        if(this.answer_order.state > 0){
-          if(this.answer_order.state === 1){
+        console.log("3 segundos answer", client_menu.answer_order)
+        if(client_menu.answer_order.state > 0){
+          if(client_menu.answer_order.state === 1){
             this.answer_message = "Pedido aceptado";
-            //location.reload()
-            //socket.emit("get-ready-menu");
+            socket.emit("get-ready-menu");
+            client_menu.count_selected = 0;
           }
-          if(this.answer_order.state === 2){
+          if(client_menu.answer_order.state === 2){
             this.answer_message = "Pedido rechazado";
           }
           this.show_answer_message = true;
-          console.log(this.show_answer_message = true);
           setTimeout(()=>{
             this.show_answer_message=false;
-            this.answer_order.state = 0;
+            client_menu.answer_order.state = 0;
           }, 3000)
         }
       }, 3000);
@@ -109,12 +102,12 @@ export default {
     //  console.log("modificadno item")
     //  return state.client_menu.items;
     //},
-    length_ordered_items(){
-      return this.order.items.length;
-    },
-    answer_order(){
-      return state.answer_order;
-    }
+    //length_ordered_items(){
+      //return this.order.items.length;
+    //},
+    //answer_order(){
+      //return state.answer_order;
+    //}
 
   },
   mounted(){

@@ -5,17 +5,14 @@
       <div class="date">
           <input type="date">
       </div>
-      <ul>
-        <li v-for="(objeto, index) in connected" :key="index">{{ objeto }}</li>
-      </ul>
       <div class="waiting-orders">
         <h2>Ordenes en espera</h2>
-        <CompleteOrder/>
+        <CompleteOrder v-for="(order, index) in state.waiting" :key="index" :order="order" :index="index" :order_change_state="order_waiting_to_preparating"/>
         <a href="#">Show all</a>
       </div>
       <div class="waiting-orders">
-        <h2>Platos en preparación</h2>
-        <CompleteOrder/>
+        <h2>Ordenes en preparación</h2>
+        <CompleteOrder v-for="(order, index) in state.preparating" :key="index" :order="order" :index="index" :order_change_state="order_preparating_to_ready"/>
         <a href="#">Show all</a>
       </div>
     </main>
@@ -74,20 +71,36 @@
 </template>
 
 <script>
-import {state} from '@/socket'
+import {socket, state} from '@/socket'
 import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
 export default {
   name:'OrdersView',
   components: { CompleteOrder},
   data(){
     return{
-      orders:[]
+      state,
     }
   },
   computed:{
-    connected(){
-      return state.orders;
-    }
+
+  },
+  methods:{
+    order_waiting_to_preparating(index){
+      socket.emit('order-waiting-to-preparating', {id_order: state.waiting[index].id_order})
+      state.preparating.push(state.waiting[index]);
+      state.waiting.splice(index, 1);
+    },
+    order_preparating_to_ready(index){
+      socket.emit('order-preparating-to-ready', {id_order: state.preparating[index].id_order})
+      state.ready.push(state.preparating[index]);
+      state.preparating.splice(index, 1);
+      console.log("change function ready",state.ready)
+      console.log("change funticon preparating",state.preparating)
+    },
+  },
+  mounted(){
+    socket.emit('get-all-waiting-order');
+    socket.emit('get-all-preparating-order');
   }
 }
 </script>

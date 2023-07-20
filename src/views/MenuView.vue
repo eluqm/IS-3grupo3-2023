@@ -6,8 +6,8 @@
               <div v-if="active" class="current-menu">
                 <h2>Menu en curso</h2>
                 <div class="menu-data">
-                  <h2>{{menu.name}}</h2>
-                  <h2>{{menu.description}}</h2>
+                  <h2>{{state.menu.name}}</h2>
+                  <h2>{{state.menu.description}}</h2>
                 </div>
               </div>
               <h3 v-else>No hay un menú en curso</h3>
@@ -15,7 +15,7 @@
             </div>
             <div class="items">
               <h2>Seleccione la cantidad de porciones que hay</h2>
-              <div v-for="(item, index) in items" :key="index" class="item" :class="getClassColor(item)">
+              <div v-for="(item, key, index) in state.menu.items" :key="index" class="item" :class="getClassColor(item)">
                 <div class="image">
                   <img :src="item.image" alt="">
                 </div>
@@ -54,6 +54,7 @@ export default {
   },
   data(){
     return {
+        state,
         menu_items: []
     }
   },
@@ -61,50 +62,28 @@ export default {
     setMenu(menu){
       socket.emit("set-menu",menu);
     },
-    getItems(id_menu){
-      socket.emit("get-items-from-menu", id_menu , ()=>{});
-      this.menu_items =  state.items_from_menu;
-    },
-    sendMenu(){
-      console.log("menu_items",this.menu_items)
-      socket.emit("handle-menu", this.menu_items,()=>{})
-    },
-    enableItem(id_item, index){
-      state.menu.items[index].enabled = true;
-      socket.emit("enable-item", state.menu.items[index]);
-      //aumentar el seteo del amount del menu
-    },
-    disableItem(id_item, index){
-      state.menu.items[index].enabled = false;
-      socket.emit("disable-item", state.menu.items[index]);
-      //aumentar el seteo del amount del menu
-    },
     increaseAmount(id_item , index){
-      console.log("Aumente");
-      state.menu.items[index].amount ++;
+      state.menu.items[id_item].amount ++;
       //solo con el statement de arriba deberia mirar
       //cambiar el valor por pantalla
       //recien cuando se habilita se envio al servidor
-
     },
     decreaseAmount(id_item, index){
-      console.log("Disminui");
-      if(state.menu.items[index].amount > 0)
-        state.menu.items[index].amount --;
-    }
-
-    
+      if(state.menu.items[id_item].amount > 0)
+        state.menu.items[id_item].amount --;
+    },
+    enableItem(id_item, index){
+      state.menu.items[id_item].enabled = true;
+      socket.emit("enable-item", state.menu.items[id_item]);
+      //aumentar el seteo del amount del menu
+    },
+    disableItem(id_item, index){
+      state.menu.items[id_item].enabled = false;
+      socket.emit("disable-item", state.menu.items[id_item]);
+      //aumentar el seteo del amount del menu
+    },
   },
   computed: {
-    menus(){
-        return state.menus;
-    },
-    menu(){
-      return state.menu
-    },
-    items(){
-      return state.menu.items;
-    },
     active(){
       if(state.menu.name){
         return true;
@@ -122,8 +101,8 @@ export default {
     }
   },
   mounted(){
-    console.log(state.menu)
     socket.emit("get-complete-menu");
+    console.log("Menu view mounted:", state.menu)
   }
 }
 </script>

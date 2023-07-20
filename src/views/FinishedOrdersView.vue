@@ -5,17 +5,15 @@
       <div class="date">
           <input type="date">
       </div>
-      <ul>
-        <li v-for="(objeto, index) in connected" :key="index">{{ objeto }}</li>
-      </ul>
+
       <div class="waiting-orders">
-        <h2>Ordenes en espera</h2>
-        <CompleteOrder/>
+        <h2>Ordenes Listas</h2>
+        <CompleteOrder v-for="(order, index) in state.ready" :key="index" :order="order" :index="index" :order_change_state="order_ready_to_commited"/>
         <a href="#">Show all</a>
       </div>
       <div class="waiting-orders">
-        <h2>Platos en preparación</h2>
-        <CompleteOrder/>
+        <h2>Ordenes entregadas</h2>
+        <CompleteOrder v-for="(order, index) in state.commited" :key="index" :order="order" :index="index" :order_change_state="order_commited_to_finished"/>
         <a href="#">Show all</a>
       </div>
     </main>
@@ -74,15 +72,34 @@
 </template>
 
 <script>
-import {state} from '@/socket'
+import {state, socket} from '@/socket'
 import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
 export default {
   name:'OrdersView',
   components: { CompleteOrder},
-  computed:{
-    connected(){
-      return state.orders;
+  data(){
+    return{
+      state
     }
+  },
+  computed:{
+  },
+  methods: {
+    order_ready_to_commited(index){
+      socket.emit('order-ready-to-commited', {id_order: state.ready[index].id_order})
+      state.commited.push(state.ready[index]);
+      state.ready.splice(index, 1);
+    },
+    order_commited_to_finished(index){
+      //socket.emit('order-commited-to-finished', {id_order: state.commited[index].id_order})
+      //state.finished.push(state.commited[index]);
+      state.commited.splice(index, 1);
+    },
+  },
+  mounted(){
+    socket.emit('get-all-ready-order');
+    socket.emit('get-all-commited-order');
+    console.log("state.ready",state.ready)
   }
 }
 </script>

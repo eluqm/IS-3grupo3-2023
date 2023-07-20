@@ -3,36 +3,25 @@
         <table class="table-waiting-orders">
             <thead>
                 <tr>
-                    <th>Mesa: 12</th>
-                    <th>Hora: 15:35</th>
-                    <th></th>
+                    <th>Mesa: {{order.id_table}}</th>
+                    <th>Hora: {{order.time}}</th>
                     <th>
                       <button @click="setAccordion" class="accordion">
                         +
                       </button>
                     </th>
+                    <th>
+                      <button @click="order_change_state(index)" class="btn">
+                        Preparar
+                      </button>
+                    </th>
                 </tr>
             </thead>
             <tbody v-show="accordionVisible">
-                <tr>
-                  <td>Fuente Mixta 2</td>
-                  <td>Papas, Lechon de hcnacho, sarza de senca,
-                     mas coasas, mas cosas, mas cosas, mas cosas</td>
-                  <td>1</td>
-                  <td class="primary">Seleccionar</td>
-                </tr>
-                <tr>
-                  <td>Fuente 4</td>
-                  <td>Papas, Lechon de hcnacho, sarza de senca,
-                     mas coasas, mas cosas, mas cosas, mas cosas</td>
-                  <td>1</td>
-                  <td class="primary">Seleccionar</td>
-                </tr>
-                <tr>
-                  <td>Caldo de Lomo</td>
-                  <td>Papas, Lechon de hcnacho, sarza de senca,
-                     mas coasas, mas cosas, mas cosas, mas cosas</td>
-                  <td>2</td>
+                <tr v-for="(item, index) in order.items" :key="index">
+                  <td>{{item.name}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.amount}}</td>
                   <td class="primary">Seleccionar</td>
                 </tr>
             </tbody>
@@ -44,6 +33,11 @@
 
 export default {
     name: 'CompleteOrder',
+    props:{
+      order: {type: Object, required: true},
+      index: {type: Number, required: true},
+      order_change_state: {type: Function, required: true}
+    },
     data(){
         return {
             accordionVisible : false
@@ -120,10 +114,16 @@ td:nth-child(4) {
   width: 8rem;
 }
 
-table button{
+table .accordion{
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
+}
+table .btn{
+  background: var(--color-primary);
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  color: white;
 }
 a{
   text-align: center;
