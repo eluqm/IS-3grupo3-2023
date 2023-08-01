@@ -2,39 +2,17 @@
   <div class="container">
     <main>
       <h1>Ordenes</h1>
-      
+      <div class="date">
+          <input type="date">
+      </div>
       <div class="waiting-orders">
         <h2>Ordenes en espera</h2>
-        <table>
-          <!-- Encabezados de la tabla -->
-          <thead>
-            <tr>
-              <th>#ID Orden</th>
-              <th>#Mesa</th>
-              <th>#Items</th>
-              <th>Hora</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Iterar sobre las órdenes y mostrar los datos -->
-            <tr v-for="order in orders" :key="order.order_id">
-              <td>{{ order.order_id }}</td>
-              <td>{{ order.table_number }}</td>
-              <td>{{ order.items.length }}</td>
-              <td>{{ order.timestamp }}</td>
-              <td>{{ order.status }}</td>
-              <td class="primary">Detalles</td>
-            </tr>
-          </tbody>
-        </table>
-        <CompleteOrder/>
+        <CompleteOrder v-for="(order, index) in state.waiting" :key="index" :order="order" :index="index" :order_change_state="order_waiting_to_preparating"/>
         <a href="#">Show all</a>
       </div>
       <div class="waiting-orders">
-        <h2>Platos en preparación</h2>
-        <CompleteOrder/>
+        <h2>Ordenes en preparación</h2>
+        <CompleteOrder v-for="(order, index) in state.preparating" :key="index" :order="order" :index="index" :order_change_state="order_preparating_to_ready"/>
         <a href="#">Show all</a>
       </div>
     </main>
@@ -93,30 +71,36 @@
 </template>
 
 <script>
-import axios from 'axios';
-import CompleteOrder from '../components/OrdersView/CompleteOrder.vue';
-
+import {socket, state} from '@/socket'
+import CompleteOrder from '../components/OrdersView/CompleteOrder.vue'
 export default {
-  name: 'OrdersView',
-  components: { CompleteOrder },
-  data() {
-    return {
-      orders: []  // Inicializar la propiedad orders como un array vacío
-    };
-  },
-  mounted() {
-    this.fetchOrders();
-  },
-  methods: {
-    fetchOrders() {
-      axios.get('/api/orders')
-        .then(response => {
-          this.orders = response.data.slice(0, 2);  // Limitar las órdenes a 2 elementos
-        })
-        .catch(error => {
-          console.error('Error fetching orders:', error);
-        });
+  name:'OrdersView',
+  components: { CompleteOrder},
+  data(){
+    return{
+      state,
     }
+  },
+  computed:{
+
+  },
+  methods:{
+    order_waiting_to_preparating(index){
+      socket.emit('order-waiting-to-preparating', {id_order: state.waiting[index].id_order})
+      state.preparating.push(state.waiting[index]);
+      state.waiting.splice(index, 1);
+    },
+    order_preparating_to_ready(index){
+      socket.emit('order-preparating-to-ready', {id_order: state.preparating[index].id_order})
+      state.ready.push(state.preparating[index]);
+      state.preparating.splice(index, 1);
+      console.log("change function ready",state.ready)
+      console.log("change funticon preparating",state.preparating)
+    },
+  },
+  mounted(){
+    socket.emit('get-all-waiting-order');
+    socket.emit('get-all-preparating-order');
   }
 };
 </script>

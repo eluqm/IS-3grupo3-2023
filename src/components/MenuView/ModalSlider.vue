@@ -4,7 +4,7 @@
     </button>
     <div v-if="showModal" class="modal">
         <div class="slider-container">
-        <div class="card-slider" :style="{transform: `translateX(${translateX}rem)`}">
+        <div class="card-slider">
             <div class="card">
 
                 <div class="menus">
@@ -33,40 +33,9 @@
                     </table>
                     <div class="options">
                         <button @click="closeModal()">Cancelar</button>    
-                        <button @click="slideNext()">Siguiente</button>    
                     </div>             
                 </div>
             </div>
-            <div class="card">
-                <div class="items">
-                    <h2>Seleccione la cantidad de porciones que hay</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre del plato</th>
-                                <th>Descripción</th>
-                                <th>Imagen</th>
-                                <th>Cantidad de platos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in menu_items" :key="index">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.description }}</td>
-                                <td>  -  </td>
-                                <td>
-                                    <input type="number" v-model="item.amount">
-                                </td>
-                            </tr>                        
-                        </tbody>
-                    </table>
-                    <div class="options">
-                        <button @click="slidePrev()">Retroceder</button>
-                        <button @click="sendMenu">Aceptar</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
         </div>
     </div>
@@ -74,14 +43,12 @@
 
 <script>
 import { socket, state } from '@/socket'
-console.log("EJecutando modal slider")
 export default {
     data(){
         return{
             showModal: false,
             //menus: [],
             menu_items: [],
-            currentIndex: 0
         }
     },
     props: {
@@ -89,17 +56,14 @@ export default {
         //menu_items: {type: Array, required: true}
     },
     computed: {
-        translateX(){
-            return -this.currentIndex * 50
-        },
         menus(){
             return state.menus;
         },
     },
     methods: {
         openModal(){
-            console.log("Open Modal")
             this.showModal = true;
+            socket.emit("get-menus");
         },
         closeModal(){
             //this.selectMenu()
@@ -109,25 +73,9 @@ export default {
             this.selectMenu(menu);
             this.showModal = false;
         },
-        slideNext(){
-            this.currentIndex++;
-            if(this.currentIndex >= 2){
-                this.currentIndex = 0;
-            }
-        },
-        slidePrev(){
-            this.currentIndex--;
-            if(this.currentIndex < 0) {
-                this.currentIndex = 1;
-            }
-        },
     },
     mounted(){
-        socket.emit("get-menus")
-    },
-    
-    setup(props){
-        
+        socket.emit("get-menus");
     }
 }
 </script>

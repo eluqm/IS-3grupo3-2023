@@ -1,22 +1,34 @@
 <template>
     <button class="btn-receipt" @click="openModal()">
         <i class="material-symbols-sharp btn-receipt">receipt_long</i>
-        <p v-if="length > 0" class="badge">{{length}}</p>
+        <p v-if="client_menu.count_selected > 0" class="badge">{{client_menu.count_selected}}</p>
     </button>
     <div class="modal-overlay" :class="{active :showModal}">
-        <div class="modal">
+        <div class="modal" ref="scrollableDiv">
             <h2>Seleccione la cantidad de porciones que desea</h2>
-            <div v-for="(item,index) in this.items" :key="index" class="item">
+            <template v-for="(item,key,index) in client_menu.items" :key="index">
+            <div v-if="item.amount > 0" class="item">
                     <p>{{item.name}}</p>
                     <p>{{item.description}}</p>
                     <p>S/. {{item.price}}</p>
+                    <div class="div-icon span-2">
+                        <button class="btn-icon" @click="cancelItem(index)">
+                            <i class="material-symbols-sharp">cancel</i>
+                        </button>
+                    </div>
                     <p></p>
                     <div class="amount">
-                        <button>-</button>
+                        <button @click="decreaseAmountItem(item, index)">-</button>
                         <p>{{item.amount}}</p>
-                        <button>+</button>
+                        <button @click="increaseAmountItem(item, index)">+</button>
                     </div>
                     <p>S/. {{item.amount * item.price}}</p>
+            </div>
+            </template>
+
+            <div class="table">
+                <label>Ingrese el número de mesa</label>
+                <input class="input" type="number" v-model="id_table">
             </div>
             
             <div class="options">
@@ -28,23 +40,29 @@
 </template>
 
 <script>
+import { client_menu } from '@/socket'
 export default {
     name: "ModalReceipt",
+    props: {
+        _items : {type: Object, required: true},
+        sendOrder: {type: Function, required: true},
+        cancelItem: {type: Function, required: true},
+        setTable : {type: Function, required: true}
+    },
     data(){
         return{
+            client_menu,
             showModal: false,
             menu_items: [],
+            id_table: 0,
+            items: this._items
         }
-    },
-    props: {
-        items : {type: Array, required: true},
-        sendOrder: {type: Function, required: true}
-
     },
     computed: {
-        length(){
-            return this.items.length;
-        }
+        
+        //length(){
+            //return this.computedItems.length;
+        //}
     },
     methods: {
         openModal(){
@@ -53,12 +71,33 @@ export default {
         closeModal(){
             this.showModal = false;
         },
+        increaseAmountItem(item, index){
+            client_menu.items[item.id_item].amount++;
+        },
+        decreaseAmountItem(item, index){
+            if(client_menu.items[item.id_item].amount > 1){
+                client_menu.items[item.id_item].amount--;
+            }
+        },
         makeOrder(){
             this.showModal = false;
+            this.setTable(this.id_table)
             this.sendOrder();
+            //let orderes_items = []
+            //for(let key in state.client_menu.items){
+            //    if(state.client_menu.items[key].amount > 0){
+            //        orderes_items.push(state.client_menu.items[key]);
+            //    }
+            //}
+            
+        },
+        initializeScrollbar(){
+            const scrollableDiv = this.$refs.scrollableDiv;
+            scrollableDiv.addEventListener('scroll', this.handleScroll);
         }
     },
     mounted(){
+        this.initializeScrollbar()
     },
 }
 </script>
@@ -67,7 +106,7 @@ export default {
 .btn-receipt{
     position: sticky;
     top: 5rem;
-    left: 20rem;
+    left: 80%;
     width: 4rem;
     height: 4rem;
     color: black;
@@ -96,15 +135,20 @@ export default {
 }
 
 .modal {
-  position: absolute;
-  top: 50%;
-  background-color: #fff;
-  padding: 20px;
-  opacity: 0;
-  /*visibility: hidden;*/
-  transition: transform 1s;
-  /*transform: translateY(-100%);*/
-  color: black;
+    width: 45rem;
+    height: 30rem;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background-color: #fff;
+    padding: 20px;
+    opacity: 0;
+    /*visibility: hidden;*/
+    transition: transform 1s;
+    /*transform: translateY(-100%);*/
+    color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal .active{
@@ -128,8 +172,15 @@ export default {
     margin-top: 1rem;
     color: black;
     display: grid;
-    grid-template-columns: 30% 50% 20%;
+    grid-template-columns: 20% 50% 15% 15%;
+    grid-template-rows: auto;
     gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+.span-2{
+    grid-row-end: span 2;
 }
 
 .item .data{
@@ -150,6 +201,17 @@ export default {
     flex-direction: row;
 }
 
+.table {
+    display: flex;
+    gap: 1rem;
+    color: black;
+}
+
+.table .input{
+    border: 1px solid black;
+}
+
+
 
 .items{
     margin-top: 1rem;
@@ -169,21 +231,24 @@ export default {
   box-shadow: none;
 }
 
-.modal table tbody tr{
-    background: white;
-}
-
-.modal table tbody td{
-  height: 4rem;
-  border-bottom: 1px solid var(--color-light);
-  text-align: center;
-}
-
 .modal button{
   text-align: center;
   margin: 1rem auto;
   color: white;
   display: block;
   border-radius: 0.4rem;
+}
+
+@media screen and (max-width: 700px){
+    .btn-receipt{
+        top: 80%;
+        left: 75%;
+    }
+    .modal{
+        width: 100%;
+        height: 80%;
+        top: 10%;
+        left: 0%;
+    }
 }
 </style>

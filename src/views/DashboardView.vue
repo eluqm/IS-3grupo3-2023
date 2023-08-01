@@ -5,45 +5,31 @@
       <div class="date">
           <input type="date">
       </div>
-      <ul>
-        <li v-for="order in connected" :key="order.order_id">
-          <h3>Order ID: {{ order.order_id }}</h3>
-          <p>Message: {{ order.msg }}</p>
-          <p>Status: {{ order.status }}</p>
-          <ul>
-            <li v-for="dish in order.dishes" :key="dish.dishId">
-              <p>Dish ID: {{ dish.dishId }}</p>
-              <p>Name: {{ dish.name }}</p>
-              <p>Status: {{ dish.status }}</p>
-            </li>
-          </ul>
-        </li>
-      </ul>
+      
       <div class="recent-orders">
         <h2>Ordenes recientes</h2>
 
         <table>
-          <thead>
-            <tr>
-              <th>#ID Orden</th>
-              <th>#Mesa</th>
-              <th>#Items</th>
-              <th>Hora</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Mostrar solo las primeras dos filas -->
-            <tr v-for="(order, index) in connected" :key="index" v-if="index < 2">
-              <td>{{ order.order_id }}</td>
-              <td>{{ order.table }}</td>
-              <td>{{ order.items }}</td>
-              <td>{{ order.time }}</td>
-              <td :class="order.statusClass">{{ order.status }}</td>
-              <td class="primary">Detalles</td>
-            </tr>
-          </tbody>
+            <thead>
+                <tr>
+                    <th>#ID Orden</th>
+                    <th>#Mesa</th>
+                    <th>#Items</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               <tr v-for="order in summary" :key="order.id_order">
+                  <td>{{ order.id_order }}</td>
+                  <td>{{ order.id_table }}</td>
+                  <td>{{ order.n_items }}</td>
+                  <td>{{ order.time }}</td>
+                  <td class="warning">{{ state_order(order.state) }}</td>
+                  <td class="primary">Detalles</td>
+                </tr>
+            </tbody>
         </table>
 
         <a href="#">Show all</a>
@@ -54,31 +40,15 @@
       <div class="div-frequency">
         <h2>Frecuencia de ordenes</h2>
         <div class="frequency">
-          <div class="frequency-item">
-            <div class="progress-line">
-              <p>Fuente 1</p>
+          <template v-for="(item, index) in state.frequency" :key="index">
+            <div v-if="item.amount > 0" class="frequency-item">
+              <div class="progress-line" :style="{'width': item.percentage +'%'}">
+                <p>{{item.name}}</p>
+              </div>
+              <p>{{item.amount}}</p>
             </div>
-            <p>20</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'75' +'%'}">
-              <p>Fuente 2</p>
-            </div>
-            <p>15</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'50' +'%'}">
-              <p>Fuente Mixta</p>
-            </div>
-            <p>10</p>
-          </div>
-          <div class="frequency-item">
-            <div class="progress-line" :style="{'width':'25' +'%'}">
-              <p>Fuente 5</p>
-            </div>
-            <p>5</p>
-          </div>
-        </div> 
+          </template>
+        </div>
       </div>
       <!--  END DIV-FREQUENCY  -->
       <div class="div-personnel">
@@ -104,17 +74,52 @@
 </template>
 
 <script>
-import {state} from '@/socket'
+import {socket, state} from '@/socket'
 //import Sidebar from '../components/Sidebar.vue'
 import Sidebar from '../components/Sidebar.vue'
 import Profile from '../components/Profile.vue'
 export default {
   name: 'DashboardView',
   components: {Sidebar, Profile},
+  data(){
+    return{
+      state
+    }
+  },
   computed:{
     connected(){
       return state.orders;
+    },
+    summary(){
+      return state.summary_orders;
+    },
+    
+  },
+  methods:{
+    state_order(integer_state_order){
+      if(integer_state_order === 0){
+        return 'En espera';
+      }
+      if(integer_state_order === 1){
+        return 'En preparación';
+      }
+      if(integer_state_order === 0){
+        return 'Lista/Terminada';
+      }
+      if(integer_state_order === 0){
+        return 'Entregada';
+      }
+    },
+    frequency_width(percentage){
+      return {
+        width: percentage
+      }
     }
+  },
+  mounted(){
+    socket.emit("get-summary");
+    socket.emit("set-frequency");
+    console.log(state.frequency)
   }
 }
 </script>
