@@ -79,7 +79,10 @@ npm run serve
 - RNF4: El sistema debe ser compatible con diferentes dispositivos y sistemas operativos.
 - RNF5: El sistema debe ser fácil de integrar con otras herramientas y sistemas utilizados por el restaurante.
 
-
+## Casos de prueba
+| Caso de prueba | Entrada | Resultado esperado |
+| -------------- | ------- | ------------------ |
+| Envio de orden | 
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
