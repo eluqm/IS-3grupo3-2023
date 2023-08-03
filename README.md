@@ -1,3 +1,36 @@
+<h1 align="center">E-Restaurant</h1>
+<h1 align="center">Ordenes en tiempo real</h1>
+
+## Tabla de Contenidos:
+---
+- [Problemática](#problemática)
+- [Aplicaciones Similares](#aplicaciones-similares)
+- [Propósito del Proyecto](#propósitodelproyecto)
+- [Tecnologías Usadas](#tecnología-usadas)
+- [Características](#características)
+- [Instalación](#instalación)
+- [Interfaz del Proyecto](#interfaz-del-proyecto)
+---
+## Problemática:
+
+En la mayoría de restaurantes tanto como el servicio al cliente como la organización interna de la preparación tienen un funcionamiento antiguo. En una época donde la tecnología puede suplir muchas labores, ofrecemos un sistema automático de órdenes en tiempo real. 
+El sistema no solo permitirá a los usuarios realizar órdenes desde nuestra web sino que también ayudará con funciones de administración de las órdenes, del menú y los platos solicitados. Teniendo un control automtizado de las órdenes de los usuarios, se puede tomar medidas para ir preprando platos de antemano y de igual manera prepararse para otros días.
+
+## Aplicaciones Similares:
+- [Restaurant.pe](https://restaurant.pe/).
+- [Mesa247](https://www.mesa247.pe/).
+
+## Propósito del Proyecto
+
+E-Restaurant busca proporcionar una solución eficiente y conveniente para las órdenes de un restaurant y su administración, simplificando el proceso tanto para los usuarios como para los restaurantes. En este contexto tambien el software tiene como posibles metas:
+
+**a) Mejorar la experiencia del usuario:** Al ser un sistema virtual de órdenes a través de la web, los usuarios no necesitan realizar cola, estar esperando por el menúd del restaurante.
+
+**b) Mejorar la administración:** BusGO podra integrar los horarios y precios de múltiples compañías de autobuses, brindando a los usuarios una plataforma única desde la cual puedan comparar y elegir entre diferentes opciones. Esto simplificaría el proceso de búsqueda y permitiría una toma de decisiones más informada.
+
+**c) Ofrecer servicios adicionales:** Además de la venta de pasajes, BusGO podría proporcionar servicios complementarios, como la reserva de asientos, la emisión de boletos electrónicos, la notificación de cambios en los horarios de los autobuses, la visualización de rutas y paradas, entre otros. Estos servicios adicionales mejorarían la experiencia del usuario y agregarían valor a la plataforma.
+
+
 # E-restaurant  
 Para que puedan ejecutar siga las siguientes instrucciones:
 
