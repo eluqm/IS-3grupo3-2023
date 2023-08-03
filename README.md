@@ -83,7 +83,7 @@ npm run serve
 | Caso de prueba | Entrada | Resultado esperado |
 | ---------------------- | ------- | ------------------ |
 | Envio de orden exitoso | Cantidad = < cantidad definida | La orden se envia correctamente y sin ningun error. | 
-|                          |                                  | La orden llega al dashboard del admin correctamente |
+                              | La orden llega al dashboard del admin correctamente |
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
