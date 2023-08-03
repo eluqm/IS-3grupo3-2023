@@ -7,8 +7,8 @@
 - [Aplicaciones Similares](#aplicaciones-similares)
 - [Propósito del Proyecto](#propósitodelproyecto)
 - [Tecnologías Usadas](#tecnología-usadas)
-- [Características](#características)
 - [Instalación](#instalación)
+- [Requisitos y Especificación de Software](#características)
 - [Interfaz del Proyecto](#interfaz-del-proyecto)
 ---
 ## Problemática:
@@ -26,28 +26,28 @@ E-Restaurant busca proporcionar una solución eficiente y conveniente para las �
 
 **a) Mejorar la experiencia del usuario:** Al ser un sistema virtual de órdenes a través de la web, los usuarios no necesitan realizar cola, estar esperando por el menúd del restaurante.
 
-**b) Mejorar la administración:** BusGO podra integrar los horarios y precios de múltiples compañías de autobuses, brindando a los usuarios una plataforma única desde la cual puedan comparar y elegir entre diferentes opciones. Esto simplificaría el proceso de búsqueda y permitiría una toma de decisiones más informada.
+**b) Mejorar la administración:** El sistema nos permite recibir las órdenes y ver el estado en el que se encuentran, pasando cada orden por los estados, en espera, en preparación, listas y entregadas.
 
-**c) Ofrecer servicios adicionales:** Además de la venta de pasajes, BusGO podría proporcionar servicios complementarios, como la reserva de asientos, la emisión de boletos electrónicos, la notificación de cambios en los horarios de los autobuses, la visualización de rutas y paradas, entre otros. Estos servicios adicionales mejorarían la experiencia del usuario y agregarían valor a la plataforma.
+**c) Manejo de un Menú:** Adicionalmente el sistema permite manejar el menú actualizando en tiempo real cuales son los platos listos, de esta manera los clientes pueden hacer órdenes de platos que tienen poco tiempo de preparación o que ya se encuentran listos.
 
 
-# E-restaurant  
+## Instalación
 Para que puedan ejecutar siga las siguientes instrucciones:
 
-## Instalar Node.js
+### Instalar Node.js
 Descargar e instalar Node.js desde su página oficial: https://nodejs.org/es/
 
-## Clonar el repositorio
+### Clonar el repositorio
 ```
 git clone https://github.com/eluqm/IS-3grupo3-2023
 ```
 
-## Ubicarse en la carpeta del proyecto
+### Ubicarse en la carpeta del proyecto
 ```
 cd IS-3grupo3-2023
 ```
 
-## Instalar dependencias
+### Instalar dependencias
 ```
 npm install
 ```
@@ -57,9 +57,9 @@ npm install
 npm run serve
 ```
 
-# Requisitos y Especificación de Software
+## Requisitos y Especificación de Software
 
-## Requisitos Funcionales
+### Requisitos Funcionales
 - RF1: El sistema debe permitir a los usuarios registrarse en el sistema.
 - RF2: El sistema debe permitir a los usuarios iniciar sesión en el sistema.
 - RF3: El sistema debe permitir a los usuarios recuperar su contraseña.
