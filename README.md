@@ -81,8 +81,8 @@ npm run serve
 
 ## Casos de prueba
 | Caso de prueba | Entrada | Resultado esperado |
-| -------------- | ------- | ------------------ |
-| Envio de orden | 
+| ---------------------- | ------- | ------------------ |
+| Envio de orden exitoso | Cantidad = < cantidad definida | La orden se envia correctamente y sin ningun error | 
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
