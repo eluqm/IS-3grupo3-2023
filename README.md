@@ -82,8 +82,9 @@ npm run serve
 ## Casos de prueba
 | Caso de prueba | Entrada | Resultado esperado |
 | ---------------------- | ------- | ------------------ |
-| Envio de orden exitoso | Cantidad = < cantidad definida | La orden se envia correctamente y sin ningun error. \n La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
-                              
+| Envio de orden exitoso | Cantidad de platos = < cantidad definida | La orden se envia correctamente y sin ningun error.  La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
+| ---------------------- | ------- | ------------------ |
+| Envio de orden erroneo | Cantidad de platos > = cantidad definida | La orden no se envia y aparece un error de cantidad inadecuada . El usuario puede volver a seleccionar la cantidad que desea . Una senal se envia al admin para informar que alguien pidio mas cantidad del item | 
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
