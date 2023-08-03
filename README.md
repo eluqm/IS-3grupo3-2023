@@ -83,8 +83,8 @@ npm run serve
 | Caso de prueba | Entrada | Resultado esperado |
 | ---------------------- | ------- | ------------------ |
 | Envio de orden exitoso | Cantidad de platos = < cantidad definida | La orden se envia correctamente y sin ningun error.  La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
-| Envio de orden erroneo | Cantidad de platos > = cantidad definida | La orden no se envia y aparece un error de cantidad inadecuada . El usuario puede volver a seleccionar la cantidad que desea . Una senal se envia al admin para informar que alguien pidio mas cantidad del item |
-| Envio de orden simultaneo | Cantidad de platos adecuada | La primera orden que llega es la se efectua y la segunda si la cantidad de platos es correcta tambien . La orden llega al dashboard del admin y se posiciona en el estado de espera | 
+| Envio de orden erroneo | Cantidad de platos > = cantidad definida | La orden no se envia y aparece un error de cantidad inadecuada . El usuario puede volver a seleccionar la cantidad que desea. |
+| Envio de orden simultaneo | Cantidad de platos adecuada | La primera orden que llega es la se efectua y la segunda si la cantidad de platos es correcta tambien . En caso la segunda orden no cumpla con la cantidad debido a la primera esta es rechazada | 
 | Guardado de menu exitoso | Cantidad de cada plato > 0 | El menu se guarda correctamente . El menu se muestra en la pantalla de inicio del usuario . |
 | Guardado de menu erroneo | Cantidad de cada plato < 0 | El menu no se guarda correctamente y muestra error de cantidad de plato erronea . El admin debe modificar la cantidad a una correcta. | 
 ## Especificación de Software 
