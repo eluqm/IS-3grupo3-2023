@@ -82,7 +82,7 @@ npm run serve
 ## Casos de prueba
 | Caso de prueba | Entrada | Resultado esperado |
 | ---------------------- | ------- | ------------------ |
-| Envio de orden exitoso | Cantidad = < cantidad definida | La orden se envia correctamente y sin ningun error.  La orden llega al dashboard del admin correctamente | 
+| Envio de orden exitoso | Cantidad = < cantidad definida | La orden se envia correctamente y sin ningun error. \n La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
                               
 ## Especificación de Software 
 
