@@ -60,17 +60,15 @@ npm run serve
 ## Requisitos y Especificación de Software
 
 ### Requisitos Funcionales
-- RF1: El sistema debe permitir a los usuarios registrarse en el sistema.
-- RF2: El sistema debe permitir a los usuarios iniciar sesión en el sistema.
-- RF3: El sistema debe permitir a los usuarios recuperar su contraseña.
-- RF4: El sistema debe permitir a los usuarios modificar su información personal.
-- RF5: El sistema debe permitir a los usuarios realizar pedidos.
-- RF6: El sistema debe permitir a los usuarios cancelar pedidos.
-- RF7: El sistema debe permitir a los usuarios ver el estado de sus pedidos.
-- RF8: El sistema debe permitir a los usuarios ver el historial de sus pedidos.
-- RF9: El sistema debe permitir al personal del restaurante llevar el control de las órdenes de los clientes.
-- RF10: El sistema debe permitir proporcionar una interfaz interactiva y fácil para que los clientes realicen sus pedidos.
-- RF11: El sistema debe permitir al personal del restaurante llevar el control de los productos.
+- RF1: El sistema debe permitir a los usuarios observar los platos disponibles del momento.
+- RF2: El sistema debe permitir a los usuarios realizar órdenes.
+- RF3: El sistema debe permitir a los usuarios recibir una respuesta sobre la orden.
+- RF8: El sistema debe permitir al administrador ver el historial de las órdenes.
+- RF8: El sistema debe permitir al administrador ver el estado de las órdenes.
+- RF8: El sistema debe permitir al administrador cambiar el estado de las órdenes.
+- RF8: El sistema debe permitir al administrador ver la frecuencia de los platos.
+- RF8: El sistema debe permitir al administrador actualizar el menu en funcionamiento.
+- RF8: El sistema debe permitir al administrador habilitar y deshabilitar órdenes para el cliente.
 
 ## Requisitos No Funcionales
 - RNF1: El sistema debe ser fácil de usar y entender tanto para el personal del restaurante como para los clientes.
