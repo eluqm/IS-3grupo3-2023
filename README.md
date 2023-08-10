@@ -85,6 +85,30 @@ npm run serve
 | Envio de orden simultaneo | Cantidad de platos adecuada | La primera orden que llega es la se efectua y la segunda si la cantidad de platos es correcta tambien . En caso la segunda orden no cumpla con la cantidad debido a la primera esta es rechazada | 
 | Guardado de menu exitoso | Cantidad de cada plato > 0 | El menu se guarda correctamente . El menu se muestra en la pantalla de inicio del usuario . |
 | Guardado de menu erroneo | Cantidad de cada plato < 0 | El menu no se guarda correctamente y muestra error de cantidad de plato erronea . El admin debe modificar la cantidad a una correcta. | 
+
+
+## Casos de prueba
+| Caso de prueba | Entrada | Resultado esperado |
+| ---------------------- | ------- | ------------------ |
+| Enviar orden | - Usuario selecciona platos, - Seleciona mesa y cantidad menor al menu disponible, - Envia orden| El usuario recibe un mensaje de aceptación. - La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
+
+| Enviar orden | - Usuario selecciona platos, - Seleciona mesa y cantidad mayor al menu disponible, - Envia orden| El usuario recibe un mensaje de rechazo. - La orden no llega al dashboard | 
+
+| Enviar orden | - Dos usuarios seleccionan la misma orden, - Los usuarios seleccionan la cantidad adecuada, - El primer usuario envia la orden, El segundo usuario envia la orden | El primer usuario recibe un mensaje de aceptación, - El segundo usuario recibe un mensaje de rechazo |
+
+| Enviar orden | - Dos usuarios seleccionan la misma orden, - Los usuarios seleccionan la cantidad adecuada, - El primer usuario envia la orden, El segundo usuario aun no envia la orden | El primer usuario recibe un mensaje de aceptación, - Desaparece la orden en la lista del segundo usuario |
+
+|  Activar menú | - El administrador selecciona un menu | El menu se guarda correctamente . El menu se muestra por pantalla . |
+
+|  Activar menú | - El administrador selecciona un menu, - El administrador habilita un menú, - El administrador selecciona un menú | El sistema no permite seleccionar otro menú cuando ya tiene uno activado con al meno un plato activado. |
+
+|  Activar menú | - El administrador selecciona un menu, - El administrador habilita un menú, -El administrador desahilita un menú, - El administrador selecciona un menú | El menu se guarda correctamente . El menu se muestra por pantalla . |
+
+|  Activar plato | - El administrador selecciona la cantidad de un plato, - El administrador habilita un plato | El plato se guarda correctamente. La orden se muestra por pantalla al cliente |
+
+|  Desactivar plato | - El administrador inahabilita un plato | El plato desparece de la pantalla del cliente |
+
+
 ## Especificación de Software 
 
 ### Diagrama de Casos de Uso
