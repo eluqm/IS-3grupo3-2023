@@ -91,21 +91,13 @@ npm run serve
 | Caso de prueba | Entrada | Resultado esperado |
 | ---------------------- | ------- | ------------------ |
 | Enviar orden | - Usuario selecciona platos, - Seleciona mesa y cantidad menor al menu disponible, - Envia orden| El usuario recibe un mensaje de aceptación. - La orden llega al dashboard del admin correctamente y se posiciona en el estado de espera | 
-
 | Enviar orden | - Usuario selecciona platos, - Seleciona mesa y cantidad mayor al menu disponible, - Envia orden| El usuario recibe un mensaje de rechazo. - La orden no llega al dashboard | 
-
 | Enviar orden | - Dos usuarios seleccionan la misma orden, - Los usuarios seleccionan la cantidad adecuada, - El primer usuario envia la orden, El segundo usuario envia la orden | El primer usuario recibe un mensaje de aceptación, - El segundo usuario recibe un mensaje de rechazo |
-
 | Enviar orden | - Dos usuarios seleccionan la misma orden, - Los usuarios seleccionan la cantidad adecuada, - El primer usuario envia la orden, El segundo usuario aun no envia la orden | El primer usuario recibe un mensaje de aceptación, - Desaparece la orden en la lista del segundo usuario |
-
 |  Activar menú | - El administrador selecciona un menu | El menu se guarda correctamente . El menu se muestra por pantalla . |
-
 |  Activar menú | - El administrador selecciona un menu, - El administrador habilita un menú, - El administrador selecciona un menú | El sistema no permite seleccionar otro menú cuando ya tiene uno activado con al meno un plato activado. |
-
 |  Activar menú | - El administrador selecciona un menu, - El administrador habilita un menú, -El administrador desahilita un menú, - El administrador selecciona un menú | El menu se guarda correctamente . El menu se muestra por pantalla . |
-
 |  Activar plato | - El administrador selecciona la cantidad de un plato, - El administrador habilita un plato | El plato se guarda correctamente. La orden se muestra por pantalla al cliente |
-
 |  Desactivar plato | - El administrador inahabilita un plato | El plato desparece de la pantalla del cliente |
 
 
